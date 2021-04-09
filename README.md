@@ -69,8 +69,8 @@ $ yarn format # Formats files with incorrect syntax.
 
 ## Features
 
-- [ ] Register.
-- [ ] Log in. 
+- [x] Register.
+- [x] Log in. 
 - [ ] Live stream video from broadcasting software like OBS.
   - [ ] Have a unique stream key to use for authentication.
 - [ ] Chat on other people's streams.
