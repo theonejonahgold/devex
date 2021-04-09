@@ -1,29 +1,88 @@
 # DevEx
 
+The built-from-scratch live-streaming platform for all developers. Share your coding sessions live to the world for the world to enjoy.
 
+## Table of contents
 
-<!-- Here are some hints for your project! -->
+- [Getting started](#getting-started)
+  - [Project setup](#project-setup)
+  - [Available commands](#available-commands)
+- [Tech stack](#tech-stack)
+- [Features](#features)
+  - [Wishlist](#wishlist)
+- [Data lifecycle](#data-lifecycle)
 
-<!-- Start out with a title and a description -->
+## Getting started
 
-<!-- Add a link to your live demo in Github Pages 🌐-->
+This project uses workspaces, and prefers [Yarn classic](https://classic.yarnpkg.com/lang/en/) over NPM. Both are however usable within this project.
 
-<!-- ☝️ replace this description with a description of your own work -->
+```shell
+$ git clone https://github.com/theonejonahgold/real-time-web-2021 rtw
+$ cd rtw
+$ yarn || npm install
+```
 
-<!-- replace the code in the /docs folder with your own, so you can showcase your work with GitHub Pages 🌍 -->
+### Project setup
 
-<!-- Add a nice image here at the end of the week, showing off your shiny frontend 📸 -->
+This repository consists of two packages: `web` and `server`. The `web` package is responsible for the web application that the user sees. The `server` package is a Node application handling all data used in the application via HTTP, WebSockets and RTMP streams.
 
-<!-- Maybe a table of contents here? 📚 -->
+```
+└─ real-time-web-2021
+   ├─ docs - Documentation folder.
+   ├─ server - NodeJS app.  
+   └─ web - Web app.
+```
 
-<!-- How about a section that describes how to install this project? 🤓 -->
+### Available commands
 
-<!-- ...but how does one use this project? What are its features 🤔 -->
+```shell
+$ yarn dev # Runs dev server for both packages.
+$ yarn build # Builds both packages.
+$ yarn lint # Runs Prettier without writing fixes.
+$ yarn format # Formats files with incorrect syntax.
+```
 
-<!-- What external data source is featured in your project and what are its properties 🌠 -->
+## Tech stack
 
-<!-- This would be a good place for your data life cycle ♻️-->
+- TypeScript
+- Prettier
+- Commitizen
+- Commitlint
+- Husky
 
-<!-- Maybe a checklist of done stuff and stuff still on your wishlist? ✅ -->
+### Server package
 
-<!-- How about a license here? 📜  -->
+- NodeJS
+- KoaJS
+- Firebase Firestore and Storage
+- Socket.IO
+- RTMP-server
+- HLS-server
+- FFmpeg
+- Passport.JS
+- Argon2
+
+### Web package
+
+- Svelte
+- Socket.IO
+
+## Features
+
+- [ ] Register.
+- [ ] Log in. 
+- [ ] Live stream video from broadcasting software like OBS.
+  - [ ] Have a unique stream key to use for authentication.
+- [ ] Chat on other people's streams.
+- [ ] Follow other profiles.
+  
+### Wishlist
+
+- Persistent chat message storage.
+- Video on-demand (VOD) functionality.
+- Emotes.
+- Chat moderators.
+
+## Data Lifecycle
+
+![Data showing the data lifecycle of the application](docs/data-lifecycle-v1.png)
