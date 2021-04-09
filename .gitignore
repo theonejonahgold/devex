@@ -4,3 +4,5 @@ dist
 .DS_Store
 /.svelte
 /functions
+.env
+firebase.json
