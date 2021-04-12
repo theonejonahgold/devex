@@ -7,16 +7,13 @@
     "prepare": "husky install",
     "lint": "prettier --check .",
     "format": "prettier --write .",
-    "build": "concurrently 'yarn:build:web' 'yarn:build:server'",
-    "build:web": "yarn workspace @devex/web build",
-    "build:server": "yarn workspace @devex/server build",
-    "dev": "concurrently 'yarn:dev:web' 'yarn:dev:server'",
-    "dev:web": "yarn workspace @devex/web dev",
-    "dev:server": "yarn workspace @devex/server dev"
+    "predocker": "docker-compose --file=docker-compose.init.yml build",
+    "docker": "docker-compose up --build"
   },
   "workspaces": [
     "web",
-    "server"
+    "api",
+    "stream"
   ],
   "devDependencies": {
     "@commitlint/cli": "^12.1.1",

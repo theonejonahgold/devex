@@ -1,6 +1,3 @@
-import { resolve } from 'path'
-require('dotenv').config({ path: resolve(__dirname, '..', '.env') })
-
 import Koa from 'koa'
 import session from 'koa-session'
 import passport from 'koa-passport'

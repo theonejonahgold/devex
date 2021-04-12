@@ -1,5 +1,6 @@
 import * as admin from 'firebase-admin'
 import { dbCollection } from './utils'
+import { DBUser } from 'types/user'
 
 const serviceAcc = require(process.env.GOOGLE_APPLICATION_CREDENTIALS!)
 
@@ -18,5 +19,5 @@ export function userCollection() {
   return dbCollection(
     firebaseApp,
     'users'
-  ) as FirebaseFirestore.CollectionReference<User>
+  ) as FirebaseFirestore.CollectionReference<DBUser>
 }

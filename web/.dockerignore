@@ -1,0 +1,8 @@
+.svelte
+dist
+node_modules
+*.log
+.gitignore
+.prettierignore
+Dockerfile
+.dockerignore

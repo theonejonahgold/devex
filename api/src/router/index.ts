@@ -1,16 +1,22 @@
 import { hash } from 'argon2'
 import { v4 as uuid } from 'uuid'
-import { ParameterizedContext, Next } from 'koa'
+import { Next, ParameterizedContext } from 'koa'
 import Router from '@koa/router'
 import { firestore } from 'firebase-admin'
 import { userCollection } from '../firebase'
 import { confirmBody, dataBody, errorBody } from './utils'
 import passport from 'koa-passport'
+import { UserInput } from 'types/user'
 
 export default new Router()
   .post('/register', register)
   .post('/login', login)
   .get('/logout', logout)
+  .post('/online', ctx => {
+    console.log(ctx.body)
+    ctx.body = confirmBody()
+    ctx.status = 200
+  })
 
 async function register(
   ctx: ParameterizedContext<any, Router.RouterParamContext<any, {}>, any>
@@ -34,6 +40,7 @@ async function register(
       followers: [],
       following: [],
       streamKey: uuid(),
+      online: false,
       createdAt: firestore.Timestamp.now(),
       updatedAt: firestore.Timestamp.now(),
     })

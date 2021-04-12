@@ -1,0 +1,6 @@
+FROM scratch
+
+COPY package.json yarn.lock tsconfig.json .husky /build/
+COPY api/package.json /build/api/package.json
+COPY web/package.json /build/web/package.json
+COPY stream/package.json /build/stream/package.json

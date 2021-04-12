@@ -2,6 +2,7 @@ import { verify } from 'argon2'
 import firebase, { userCollection } from '../firebase'
 import passport from 'koa-passport'
 import { Strategy as LocalStrategy } from 'passport-local'
+import { DBUser, User } from 'types/user'
 
 // @ts-ignore
 passport.serializeUser((user: User, done) => done(null, user.username))
@@ -23,12 +24,8 @@ passport.use(
   new LocalStrategy({}, (username, password, done) => {
     ;(userCollection().select(
       'username',
-      'password',
-      'followers',
-      'following'
-    ) as FirebaseFirestore.Query<
-      Pick<User, 'username' | 'password' | 'followers' | 'following'>
-    >)
+      'password'
+    ) as FirebaseFirestore.Query<Pick<DBUser, 'username' | 'password'>>)
       .where('username', '==', username)
       .get()
       .then(async val => {
@@ -36,6 +33,7 @@ passport.use(
         if (!user) return done(null, null)
         const correct = await verify(user.password!, password)
         if (!correct) return done('Password incorrect', false)
+        // @ts-expect-error: password is required in type but omitted for privacy reasons
         delete user.password
         return done(null, user)
       })
