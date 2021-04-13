@@ -72,7 +72,7 @@ $ yarn format # Formats files with incorrect syntax.
 
 - [x] Register.
 - [x] Log in. 
-- [ ] Live stream video from broadcasting software like OBS.
+- [x] Live stream video from broadcasting software like OBS.
   - [ ] Have a unique stream key to use for authentication.
 - [ ] Chat on other people's streams.
 - [ ] Follow other profiles.
