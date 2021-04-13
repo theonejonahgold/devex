@@ -11,6 +11,7 @@ function main() {
   nms.on(
     'prePublish',
     (sessionId: string, streamPath: string, { key }: any) => {
+      if (streamPath.includes('hls_')) return
       const username = parseStreamName(streamPath)
       const session = nms.getSession(sessionId)
       if (!username || !key) return session.reject()
@@ -36,11 +37,9 @@ function main() {
   )
 
   nms.on('postPublish', (sessionId: string, streamPath: string) => {
-    console.log(sessionId, streamPath)
-    if (streamPath.indexOf('hls_') !== -1) {
-      const name = streamPath.split('/').pop()
-      createPlaylist(name!).catch(console.error)
-    }
+    if (streamPath.indexOf('hls_') === -1) return
+    const name = streamPath.split('/').pop()
+    createPlaylist(name!).catch(console.error)
   })
 
   nms.on(

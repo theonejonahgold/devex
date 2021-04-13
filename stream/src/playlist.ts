@@ -12,8 +12,12 @@ function template(name: string) {
 }
 
 export default async function createPlaylist(name: string) {
-  await mkdirp(`${process.env.MEDIA_ROOT || resolve(__dirname, '..', 'media')}/live`)
-  const playlist = `${process.env.MEDIA_ROOT || resolve(__dirname, '..', 'media')}/live/${name}.m3u8`
+  const livePath = resolve(
+    process.env.MEDIA_ROOT || resolve(__dirname, '..', 'media'),
+    'live'
+  )
+  await mkdirp(livePath)
+  const playlist = resolve(livePath, `${name}.m3u8`)
   fs.open(playlist, 'w', (err, fd) => {
     if (err) throw err
     fs.writeFile(fd, template(name), errWrite => {
