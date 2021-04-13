@@ -5,18 +5,20 @@ import './passport'
 import bodyParser from 'koa-bodyparser'
 import http from 'http'
 import router from './router'
+import cors from '@koa/cors'
 
 main()
 
 function main() {
   const app = new Koa()
   app.keys = [createRandomSecret()]
+  app.use(
+    cors({
+      origin: '*',
+    })
+  )
   app.use(session(app))
   app.use(bodyParser())
-  app.use((ctx, next) => {
-    if (ctx.request.body !== {}) ctx.body = ctx.request.body
-    return next()
-  })
   app.use(passport.initialize())
   app.use(passport.session())
   app.use(router.routes())

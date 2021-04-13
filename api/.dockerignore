@@ -1,6 +1,6 @@
+dist
 node_modules
 *.log
-dist
 .gitignore
 .prettierignore
 Dockerfile

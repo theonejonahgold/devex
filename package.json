@@ -7,6 +7,8 @@
     "prepare": "husky install",
     "lint": "prettier --check .",
     "format": "prettier --write .",
+    "predev": "docker-compose --file=docker-compose.init.yml build",
+    "dev": "docker-compose --file=docker-compose.dev.yml up --build",
     "predocker": "docker-compose --file=docker-compose.init.yml build",
     "docker": "docker-compose up --build"
   },

@@ -1,0 +1,38 @@
+services:
+  builder-dev:
+    image: builder
+    build: .
+  api:
+    build: ./api
+    container_name: api-dev
+    ports:
+      - '5000:5000'
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: '/build/api/firebase.json'
+    command: "yarn dev"
+    volumes:
+    - ./api:/build/api
+#  web:
+#    build: ./web
+#    container_name: web-dev
+#    ports:
+#      - '3001:3000'
+#    depends_on:
+#      - api
+#    command: "yarn dev -- --host"
+#    volumes:
+#      - ./web:/build/web
+  stream:
+    build: ./stream
+    container_name: stream-dev
+    ports:
+      - '8000:8000'
+      - '1936:1935'
+    depends_on:
+      - api
+    environment:
+      FFMPEG_PATH: '/usr/local/bin/ffmpeg'
+      MEDIA_ROOT: '/build/stream/media'
+    command: "yarn dev"
+    volumes:
+      - ./stream:/build/stream

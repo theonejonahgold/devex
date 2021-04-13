@@ -13,10 +13,7 @@ passport.deserializeUser((username: string, done) => {
     .collection('users')
     .doc(username)
     .get()
-    .then(val => {
-      console.log(val.data())
-      done(null, val.data())
-    })
+    .then(val => done(null, val.data()))
     .catch(done)
 })
 

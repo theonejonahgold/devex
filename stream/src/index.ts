@@ -14,7 +14,7 @@ function main() {
       const username = parseStreamName(streamPath)
       const session = nms.getSession(sessionId)
       if (!username || !key) return session.reject()
-      fetch('http://localhost:5000/online', {
+      fetch('http://api:5000/api/online', {
         body: JSON.stringify({
           username,
           key,
@@ -50,7 +50,7 @@ function main() {
       const session = nms.getSession(sessionId)
       const username = parseStreamName(streamPath)
       if (!username || !key) return session.reject()
-      fetch('http://localhost:5000/online', {
+      fetch('http://api:5000/api/online', {
         body: JSON.stringify({
           username,
           key,

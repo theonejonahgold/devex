@@ -8,7 +8,7 @@ WORKDIR /build/web
 
 RUN yarn build
 
-RUN yarn --frozen-lockfile --production
+RUN if [ $NODE_ENV == "production" ]; then yarn install --frozen-lockfile; fi
 
 EXPOSE 3000
 

@@ -8,12 +8,12 @@ import { confirmBody, dataBody, errorBody } from './utils'
 import passport from 'koa-passport'
 import { UserInput } from 'types/user'
 
-export default new Router()
+export default new Router({ prefix: '/api' })
   .post('/register', register)
   .post('/login', login)
   .get('/logout', logout)
   .post('/online', ctx => {
-    console.log(ctx.body)
+    console.log(ctx.request.body)
     ctx.body = confirmBody()
     ctx.status = 200
   })
@@ -21,7 +21,7 @@ export default new Router()
 async function register(
   ctx: ParameterizedContext<any, Router.RouterParamContext<any, {}>, any>
 ) {
-  const { username, password }: UserInput = ctx.body
+  const { username, password }: UserInput = ctx.request.body
   if (!username) {
     ctx.status = 400
     ctx.body = errorBody('Username is required')
@@ -57,6 +57,7 @@ function login(
   ctx: ParameterizedContext<any, Router.RouterParamContext<any, {}>, any>,
   next: Next
 ) {
+  ctx.body = ctx.request.body
   return passport.authenticate('local', (err, user, info, status) => {
     if (!user) {
       ctx.status = 400
