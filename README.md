@@ -10,6 +10,7 @@ The built-from-scratch live-streaming platform for all developers. Share your co
 - [Tech stack](#tech-stack)
 - [Features](#features)
   - [Wishlist](#wishlist)
+- [Sketches](#sketches)
 - [Data lifecycle](#data-lifecycle)
 
 ## Getting started
@@ -82,6 +83,20 @@ $ yarn format # Formats files with incorrect syntax.
 - Video on-demand (VOD) functionality.
 - Emotes.
 - Chat moderators.
+
+## Sketches
+
+![Sketch of the discovery page](docs/discover.png)
+
+The Discovery has a list of channels that are live. In the always-present sidebar you can see your followed channels. And watch them from anywhere.
+
+![Sketch of the languages page](docs/languages.png)
+
+The Languages page shows all programming languages, so you don't have to sift through programming languages you don't like to watch.
+
+![Sketch of the stream page](docs/stream.png)
+
+The Stream page shows a live stream, with the corresponding chat next to it.
 
 ## Data Lifecycle
 
