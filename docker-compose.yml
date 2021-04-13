@@ -34,7 +34,3 @@ services:
       FFMPEG_PATH: '/usr/local/bin/ffmpeg'
       MEDIA_ROOT: '/build/stream/media'
       NODE_ENV: 'production'
-
-networks:
-  frontend:
-    driver: bridge
