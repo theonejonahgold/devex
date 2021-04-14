@@ -100,4 +100,4 @@ The Stream page shows a live stream, with the corresponding chat next to it.
 
 ## Data Lifecycle
 
-![Data showing the data lifecycle of the application](docs/data-lifecycle-v1.png)
+![Data showing the data lifecycle of the application](docs/data-lifecycle-v2.png)
