@@ -12,11 +12,7 @@ export default new Router({ prefix: '/api' })
   .post('/register', register)
   .post('/login', login)
   .get('/logout', logout)
-  .post('/online', ctx => {
-    console.log(ctx.request.body)
-    ctx.body = confirmBody()
-    ctx.status = 200
-  })
+  .post('/online', online)
 
 async function register(
   ctx: ParameterizedContext<any, Router.RouterParamContext<any, {}>, any>
@@ -58,7 +54,7 @@ function login(
   next: Next
 ) {
   ctx.body = ctx.request.body
-  return passport.authenticate('local', (err, user, info, status) => {
+  return passport.authenticate('local', (err, user) => {
     if (!user) {
       ctx.status = 400
       ctx.body = errorBody(err.message)
@@ -75,6 +71,33 @@ function logout(
 ) {
   //@ts-ignore
   ctx.logout()
+  ctx.status = 200
+  ctx.body = confirmBody()
+}
+
+async function online(
+  ctx: ParameterizedContext<any, Router.RouterParamContext<any, {}>, any>
+) {
+  const {
+    body: { key, username, live },
+  } = ctx.request
+  const ref = userCollection().doc(username)
+  const result = await ref.get()
+  if (!result.exists) {
+    ctx.status = 400
+    ctx.body = errorBody('Username is invalid')
+    return
+  }
+  const user = result.data()
+  if (user!.streamKey !== key) {
+    ctx.status = 400
+    ctx.body = errorBody('Stream key is invalid')
+    return
+  }
+  await ref.update({
+    live,
+    updatedAt: firestore.Timestamp.now(),
+  })
   ctx.status = 200
   ctx.body = confirmBody()
 }

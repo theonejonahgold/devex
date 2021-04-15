@@ -9,19 +9,9 @@ services:
       - '5000:5000'
     environment:
       GOOGLE_APPLICATION_CREDENTIALS: '/build/api/firebase.json'
-    command: "yarn dev"
+    command: 'yarn dev'
     volumes:
-    - ./api:/build/api
-#  web:
-#    build: ./web
-#    container_name: web-dev
-#    ports:
-#      - '3001:3000'
-#    depends_on:
-#      - api
-#    command: "yarn dev -- --host"
-#    volumes:
-#      - ./web:/build/web
+      - ./api:/build/api
   stream:
     build: ./stream
     container_name: stream-dev
@@ -33,6 +23,6 @@ services:
     environment:
       FFMPEG_PATH: '/usr/local/bin/ffmpeg'
       MEDIA_ROOT: '/build/stream/media'
-    command: "yarn dev"
+    command: 'yarn dev'
     volumes:
       - ./stream:/build/stream
