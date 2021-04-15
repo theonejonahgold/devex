@@ -2,7 +2,9 @@ import { verify } from 'argon2'
 import firebase, { userCollection } from '../firebase'
 import passport from 'koa-passport'
 import { Strategy as LocalStrategy } from 'passport-local'
+import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt'
 import { DBUser, User } from 'types/user'
+import { secret } from '../utils'
 
 // @ts-ignore
 passport.serializeUser((user: User, done) => done(null, user.username))
@@ -18,11 +20,10 @@ passport.deserializeUser((username: string, done) => {
 })
 
 passport.use(
-  new LocalStrategy({}, (username, password, done) => {
-    ;(userCollection().select(
-      'username',
-      'password'
-    ) as FirebaseFirestore.Query<Pick<DBUser, 'username' | 'password'>>)
+  new LocalStrategy({ session: false }, (username, password, done) =>
+    (userCollection().select('username', 'password') as FirebaseFirestore.Query<
+      Pick<DBUser, 'username' | 'password'>
+    >)
       .where('username', '==', username)
       .get()
       .then(async val => {
@@ -30,9 +31,26 @@ passport.use(
         if (!user) return done(null, null)
         const correct = await verify(user.password!, password)
         if (!correct) return done('Password incorrect', false)
-        // @ts-expect-error: password is required in type but omitted for privacy reasons
-        delete user.password
         return done(null, user)
       })
-  })
+  )
+)
+
+passport.use(
+  new JwtStrategy(
+    {
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      audience: 'devex.jonahgold.dev',
+      issuer: 'jonahgold.dev',
+      secretOrKey: secret,
+    },
+    (jwtPayload, done) => {
+      userCollection()
+        .doc(jwtPayload.username)
+        .get()
+        .then(res => res.data())
+        .then(doc => (doc ? done(null, doc) : done(null, false)))
+        .catch(done)
+    }
+  )
 )

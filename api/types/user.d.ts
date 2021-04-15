@@ -3,9 +3,9 @@ import type { firestore } from 'firebase-admin'
 interface DBUser {
   username: string
   password: string
-  followers: DBUser['username'][]
   following: DBUser['username'][]
-  online: boolean
+  live: boolean
+  viewers: number
   streamKey: string
   createdAt: firestore.Timestamp
   updatedAt: firestore.Timestamp

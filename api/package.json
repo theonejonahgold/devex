@@ -13,6 +13,7 @@
     "build": "tsc"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^8.5.1",
     "@types/koa": "^2.13.1",
     "@types/koa-bodyparser": "^4.3.0",
     "@types/koa-passport": "^4.0.2",
@@ -32,11 +33,12 @@
     "argon2": "^0.27.2",
     "dotenv": "^8.2.0",
     "firebase-admin": "^9.6.0",
+    "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.1",
     "koa-bodyparser": "^4.3.0",
     "koa-passport": "^4.1.4",
     "koa-session": "^6.2.0",
-    "passport-jwt": "^4.0.0",
+    "passport-jwt": "^3.0.0",
     "passport-local": "^1.0.0",
     "socket.io": "^4.0.1",
     "uuid": "^8.3.2"

@@ -6,7 +6,9 @@ import { firestore } from 'firebase-admin'
 import { userCollection } from '../firebase'
 import { confirmBody, dataBody, errorBody } from './utils'
 import passport from 'koa-passport'
-import { UserInput } from 'types/user'
+import { DBUser, UserInput } from 'types/user'
+import { sign } from 'jsonwebtoken'
+import { secret } from '../utils'
 
 export default new Router({ prefix: '/api' })
   .post('/register', register)
@@ -33,10 +35,10 @@ async function register(
     await userCollection().doc(username).create({
       username,
       password: hashedPassword,
-      followers: [],
       following: [],
       streamKey: uuid(),
-      online: false,
+      live: false,
+      viewers: 0,
       createdAt: firestore.Timestamp.now(),
       updatedAt: firestore.Timestamp.now(),
     })
@@ -60,9 +62,8 @@ function login(
       ctx.body = errorBody(err.message)
       return
     }
-    // @ts-ignore
-    ctx.login(user)
-    ctx.body = dataBody(user)
+    const jwt = sign({ username: user.username }, secret)
+    ctx.body = dataBody({ token: jwt })
   })(ctx, next)
 }
 
