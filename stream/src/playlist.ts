@@ -2,6 +2,11 @@ import mkdirp from 'mkdirp'
 import fs from 'fs'
 import { resolve } from 'path'
 
+const livePath = resolve(
+  process.env.MEDIA_ROOT || resolve(__dirname, '..', 'media'),
+  'live'
+)
+
 function template(name: string) {
   let line = `#EXTM3U\n#EXT-X-VERSION:3\n`
   line += `#EXT-X-STREAM-INF:BANDWIDTH=800000,RESOLUTION=640x360\n./../hls_360p/${name}/index.m3u8\n`
@@ -12,10 +17,6 @@ function template(name: string) {
 }
 
 export default async function createPlaylist(name: string) {
-  const livePath = resolve(
-    process.env.MEDIA_ROOT || resolve(__dirname, '..', 'media'),
-    'live'
-  )
   await mkdirp(livePath)
   const playlist = resolve(livePath, `${name}.m3u8`)
   fs.open(playlist, 'w', (err, fd) => {
@@ -26,5 +27,12 @@ export default async function createPlaylist(name: string) {
         if (err) throw err
       })
     })
+  })
+}
+
+export function removePlaylist(name: string) {
+  const playlist = resolve(livePath, `${name}.m3u8`)
+  fs.unlink(playlist, err => {
+    if (err) console.error(err)
   })
 }

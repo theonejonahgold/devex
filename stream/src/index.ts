@@ -1,6 +1,6 @@
 import NodeMediaServer from 'node-media-server'
 import config from './config'
-import createPlaylist from './playlist'
+import createPlaylist, { removePlaylist } from './playlist'
 import fetch from 'node-fetch'
 
 main()
@@ -67,6 +67,9 @@ function main() {
         .catch(err => {
           console.error(err)
           session.reject()
+        })
+        .finally(() => {
+          removePlaylist(username)
         })
     }
   )
