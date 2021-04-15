@@ -50,6 +50,7 @@ $ yarn format # Formats files with incorrect syntax.
 - Commitizen
 - Commitlint
 - Husky
+- Docker
 
 ### Server package
 
@@ -73,7 +74,8 @@ $ yarn format # Formats files with incorrect syntax.
 - [x] Register.
 - [x] Log in. 
 - [x] Live stream video from broadcasting software like OBS.
-  - [ ] Have a unique stream key to use for authentication.
+  - [x] Authenticate your stream with a stream key.
+- [ ] View streams.
 - [ ] Chat on other people's streams.
 - [ ] Follow other profiles.
   
