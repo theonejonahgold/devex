@@ -2,6 +2,7 @@ import NodeMediaServer from 'node-media-server'
 import config from './config'
 import createPlaylist, { removePlaylist } from './playlist'
 import fetch from 'node-fetch'
+import thumbnails from './thumbnails'
 
 main()
 
@@ -62,7 +63,6 @@ function main() {
       })
         .then(res => {
           if (!res.ok) return session.reject()
-          res.json().then(console.log)
         })
         .catch(err => {
           console.error(err)
@@ -75,6 +75,8 @@ function main() {
   )
 
   nms.run()
+
+  setInterval(thumbnails, 60000)
 }
 
 function parseStreamName(streamPath: string) {
