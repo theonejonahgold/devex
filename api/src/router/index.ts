@@ -13,8 +13,9 @@ import { secret } from '../utils'
 export default new Router({ prefix: '/api' })
   .post('/register', register)
   .post('/login', login)
-  .get('/logout', logout)
-  .post('/online', online)
+  .post('/live', live)
+  .get('/discovery', discovery)
+  .get('/user/:username', user)
 
 async function register(
   ctx: ParameterizedContext<any, Router.RouterParamContext<any, {}>, any>
@@ -67,16 +68,48 @@ function login(
   })(ctx, next)
 }
 
-function logout(
+async function discovery(
   ctx: ParameterizedContext<any, Router.RouterParamContext<any, {}>, any>
 ) {
-  //@ts-ignore
-  ctx.logout()
+  const ref = (userCollection().select(
+    'username',
+    'live',
+    'viewers'
+  ) as FirebaseFirestore.Query<Pick<DBUser, 'username' | 'live' | 'viewers'>>)
+    .where('live', '==', true)
+    .orderBy('viewers')
+    .limit(20)
+
+  const users = (await ref.get()).docs.map(doc => doc.data())
   ctx.status = 200
-  ctx.body = confirmBody()
+  ctx.body = dataBody({
+    users,
+  })
 }
 
-async function online(
+async function user(
+  ctx: ParameterizedContext<any, Router.RouterParamContext<any, {}>, any>
+) {
+  const { username } = ctx.params
+  const result = await userCollection().doc(username).get()
+  if (!result.exists) {
+    ctx.status = 404
+    ctx.body = errorBody('User not found')
+    return
+  }
+  const user = result.data()!
+
+  ctx.status = 200
+  ctx.body = dataBody({
+    user: {
+      username: user.username,
+      live: user.live,
+      viewers: user.viewers,
+    },
+  })
+}
+
+async function live(
   ctx: ParameterizedContext<any, Router.RouterParamContext<any, {}>, any>
 ) {
   const {

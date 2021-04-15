@@ -4,11 +4,18 @@
     "module": "commonjs",
     "outDir": "dist",
     "rootDir": "src",
-    "typeRoots": ["types"],
+    "typeRoots": [
+      "types"
+    ],
     "baseUrl": ".",
     "paths": {
-      "types/*": ["types/*"]
+      "types/*": [
+        "types/*"
+      ],
     }
   },
-  "include": ["src", "types/*.d.ts"]
+  "include": [
+    "src",
+    "types/*.d.ts"
+  ]
 }
