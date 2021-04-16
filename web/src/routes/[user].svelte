@@ -1,4 +1,5 @@
 <script context="module" lang="ts">
+  import Stream from '$lib/components/organisms/Stream.svelte'
   import type { Load } from '@sveltejs/kit'
 
   export const load: Load = async function ({ page, fetch, session, context }) {
@@ -18,8 +19,6 @@
 </script>
 
 <script lang="ts">
-  import Stream from '$lib/components/organisms/Stream.svelte'
-
   export let user: {
     username: string
     live: boolean
@@ -33,7 +32,7 @@
   stream={import.meta.env.PROD
     ? `https://devex.jonahgold.dev/live/${user.username}.m3u8`
     : `http://localhost:8000/live/${user.username}.m3u8`}
-  placeholder={import.meta.env.PROD
+  poster={import.meta.env.PROD
     ? `https://devex.jonahgold.dev/thumbnails/${user.username}.jpg`
     : `http://localhost:8000/thumbnails/${user.username}.jpg`}
 />

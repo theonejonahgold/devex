@@ -7,10 +7,11 @@ import bodyParser from 'koa-bodyparser'
 import passport from 'koa-passport'
 import { Server } from 'socket.io'
 import { userCollection } from './firebase'
-import './passport'
 import router from './router'
 import { errorBody } from './router/utils'
 import { secret } from './utils'
+
+import './passport'
 
 main()
 
@@ -60,22 +61,18 @@ function main() {
       if (!message) return
 
       socket.rooms.forEach(room => {
-        if (socket.id !== room) {
+        if (socket.id !== room)
           io.to(room).emit('message', { message, user: username })
-        }
       })
     })
 
     socket.on('disconnect', () => {
       socket.rooms.forEach(room => {
-        if (socket.id !== room) {
+        if (socket.id !== room)
           userCollection()
             .doc(room)
-            .update({
-              viewers: firestore.FieldValue.increment(-1),
-            })
+            .update({ viewers: firestore.FieldValue.increment(-1) })
             .catch(console.error)
-        }
       })
     })
   })

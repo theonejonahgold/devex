@@ -1,14 +1,14 @@
-import { hash } from 'argon2'
-import { v4 as uuid } from 'uuid'
-import { Next, ParameterizedContext } from 'koa'
 import Router from '@koa/router'
+import { hash } from 'argon2'
 import { firestore } from 'firebase-admin'
-import { userCollection } from '../firebase'
-import { confirmBody, dataBody, errorBody } from './utils'
+import { sign } from 'jsonwebtoken'
+import { Next, ParameterizedContext } from 'koa'
 import passport from 'koa-passport'
 import { DBUser, UserInput } from 'types/user'
-import { sign } from 'jsonwebtoken'
+import { v4 as uuid } from 'uuid'
+import { userCollection } from '../firebase'
 import { secret } from '../utils'
+import { confirmBody, dataBody, errorBody } from './utils'
 
 export default new Router({ prefix: '/api' })
   .post('/register', register)

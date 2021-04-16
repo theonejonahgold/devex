@@ -1,5 +1,5 @@
-import mkdirp from 'mkdirp'
 import fs from 'fs'
+import mkdirp from 'mkdirp'
 import { resolve } from 'path'
 
 const livePath = resolve(

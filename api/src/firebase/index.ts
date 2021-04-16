@@ -1,6 +1,6 @@
 import * as admin from 'firebase-admin'
-import { dbCollection } from './utils'
 import { DBUser } from 'types/user'
+import { dbCollection } from './utils'
 
 const serviceAcc = require(process.env.GOOGLE_APPLICATION_CREDENTIALS!)
 

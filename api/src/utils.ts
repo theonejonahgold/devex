@@ -6,4 +6,5 @@ function createRandomSecret() {
     .map(_ => allowed[Math.floor(Math.random() * allowed.length)])
     .join('')
 }
+
 export const secret = createRandomSecret()

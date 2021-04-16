@@ -1,7 +1,7 @@
 <script lang="typescript">
-  import '../app.css'
   import Header from '$lib/components/organisms/Header.svelte'
   import Sidebar from '$lib/components/organisms/Sidebar.svelte'
+  import '../app.css'
 </script>
 
 <Header />

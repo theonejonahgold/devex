@@ -1,9 +1,9 @@
 import { verify } from 'argon2'
-import firebase, { userCollection } from '../firebase'
 import passport from 'koa-passport'
+import { ExtractJwt, Strategy as JwtStrategy } from 'passport-jwt'
 import { Strategy as LocalStrategy } from 'passport-local'
-import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt'
 import { DBUser, User } from 'types/user'
+import firebase, { userCollection } from '../firebase'
 import { secret } from '../utils'
 
 // @ts-ignore

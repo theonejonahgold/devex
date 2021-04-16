@@ -1,7 +1,7 @@
+import { ChildProcess, spawn } from 'child_process'
 import { readdirSync } from 'fs'
-import { resolve } from 'path'
-import { spawn, ChildProcess } from 'child_process'
 import mkdirp from 'mkdirp'
+import { resolve } from 'path'
 
 export default async function thumbnails() {
   const ffmpegPath = process.env.FFMPEG_PATH!
