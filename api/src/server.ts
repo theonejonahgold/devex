@@ -5,7 +5,6 @@ import { decode } from 'jsonwebtoken'
 import Koa from 'koa'
 import bodyParser from 'koa-bodyparser'
 import passport from 'koa-passport'
-import session from 'koa-session'
 import { Server } from 'socket.io'
 import { userCollection } from './firebase'
 import './passport'
@@ -19,7 +18,6 @@ function main() {
   const app = new Koa()
   app.keys = [secret]
   app.use(cors({ origin: '*' }))
-  app.use(session(app))
   app.use(bodyParser())
   app.use(passport.initialize())
   app.use(router.routes())
