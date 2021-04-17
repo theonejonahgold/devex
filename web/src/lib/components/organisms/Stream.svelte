@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { debounce } from 'debounce'
+  import { debounce } from 'ts-debounce'
   import { browser } from '$app/env'
   import {
     fullscreen,
