@@ -1,0 +1,20 @@
+<script lang="ts">
+  import { fullscreen } from '$lib/stores/stream'
+  import Fullscreen from '$lib/svg/fullscreen.svelte'
+  import { toggleBoolStore } from '$lib/utils/stores'
+</script>
+
+<style>
+  button {
+    appearance: none;
+    width: var(--step-0);
+    padding: 0;
+    background: none;
+    border: none;
+    margin-left: var(--half-space);
+  }
+</style>
+
+<button on:click={toggleBoolStore(fullscreen)}>
+  <Fullscreen />
+</button>

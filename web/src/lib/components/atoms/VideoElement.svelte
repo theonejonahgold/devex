@@ -1,8 +1,7 @@
 <script lang="ts">
+  import { paused, volume, muted } from '$lib/stores/stream'
   export let videoEl: HTMLVideoElement
   export let poster: string = ''
-  export let volume: number
-  export let paused: boolean
 </script>
 
 <style>
@@ -14,6 +13,7 @@
     height: 100%;
     background: black;
   }
+
   video {
     position: absolute;
     top: 0;
@@ -26,5 +26,11 @@
 
 <div>
   <!-- svelte-ignore a11y-media-has-caption -->
-  <video bind:paused bind:this={videoEl} {poster} bind:volume autoplay />
+  <video
+    bind:paused={$paused}
+    bind:this={videoEl}
+    {poster}
+    bind:volume={$volume}
+    bind:muted={$muted}
+  />
 </div>
