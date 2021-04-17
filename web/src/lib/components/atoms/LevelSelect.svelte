@@ -1,7 +1,5 @@
 <script lang="ts">
-  import { level, levels } from '$lib/stores/stream'
-
-  $: console.log($levels)
+  import { level, levels, autoLevel } from '$lib/stores/stream'
 </script>
 
 <style>
@@ -11,6 +9,7 @@
     font-size: var(--step-0);
     font-family: var(--text-running);
   }
+
   select {
     appearance: none;
     background: none;
@@ -19,10 +18,19 @@
     font-size: var(--step-0);
     font-family: var(--text-running);
     border-radius: 0;
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    padding: var(--quarter-space);
   }
+
+  select:hover {
+  }
+
   select:focus,
   select:active {
     outline: none;
+    border-color: var(--green);
   }
 </style>
 
@@ -30,7 +38,7 @@
   <label>
     Quality:
     <select bind:value={$level}>
-      <option value={-1}>Auto</option>
+      <option value={-1}>Auto ({$levels[$autoLevel]?.height}p)</option>
       {#each $levels as level, i (level.height)}
         <option value={i}>{level.height}p</option>
       {/each}

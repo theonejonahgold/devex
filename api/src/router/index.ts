@@ -16,6 +16,10 @@ export default new Router({ prefix: '/api' })
   .post('/live', live)
   .get('/discovery', discovery)
   .get('/user/:username', user)
+  .use(passport.authenticate('jwt', { session: false }))
+  .post('/follow', follow)
+  .post('/unfollow', unfollow)
+  .post('/title', title)
 
 async function register(
   ctx: ParameterizedContext<any, Router.RouterParamContext<any, {}>, any>
@@ -42,8 +46,13 @@ async function register(
       viewers: 0,
       createdAt: firestore.Timestamp.now(),
       updatedAt: firestore.Timestamp.now(),
+      streamTitle: '',
     })
-    ctx.body = confirmBody()
+    const jwt = sign({ username }, secret, {
+      audience: 'devex.jonahgold.dev',
+      issuer: 'jonahgold.dev',
+    })
+    ctx.body = dataBody({ token: jwt })
   } catch (err) {
     ctx.status = 500
     ctx.body = errorBody(
@@ -60,10 +69,13 @@ function login(
   return passport.authenticate('local', (err, user) => {
     if (!user) {
       ctx.status = 400
-      ctx.body = errorBody(err.message)
+      ctx.body = errorBody(err)
       return
     }
-    const jwt = sign({ username: user.username }, secret)
+    const jwt = sign({ username: user.username }, secret, {
+      audience: 'devex.jonahgold.dev',
+      issuer: 'jonahgold.dev',
+    })
     ctx.body = dataBody({ token: jwt })
   })(ctx, next)
 }
@@ -74,8 +86,11 @@ async function discovery(
   const ref = (userCollection().select(
     'username',
     'live',
-    'viewers'
-  ) as FirebaseFirestore.Query<Pick<DBUser, 'username' | 'live' | 'viewers'>>)
+    'viewers',
+    'streamTitle'
+  ) as FirebaseFirestore.Query<
+    Pick<DBUser, 'username' | 'live' | 'viewers' | 'streamTitle'>
+  >)
     .where('live', '==', true)
     .orderBy('viewers')
     .limit(20)
@@ -105,6 +120,7 @@ async function user(
       username: user.username,
       live: user.live,
       viewers: user.viewers,
+      streamTitle: user.streamTitle,
     },
   })
 }
@@ -132,6 +148,42 @@ async function live(
     live,
     updatedAt: firestore.Timestamp.now(),
   })
+  ctx.status = 200
+  ctx.body = confirmBody()
+}
+
+async function title(
+  ctx: ParameterizedContext<any, Router.RouterParamContext<any, any>, any>
+) {
+  await userCollection()
+    .doc(ctx.state.user.username)
+    .update({ streamTitle: ctx.request.body.streamTitle })
+  ctx.status = 200
+  ctx.body = confirmBody()
+}
+
+async function follow(
+  ctx: ParameterizedContext<any, Router.RouterParamContext<any, any>, any>
+) {
+  const { user } = ctx.state
+  await userCollection()
+    .doc(user.username)
+    .update({
+      following: firestore.FieldValue.arrayUnion(ctx.request.body.channel),
+    })
+  ctx.status = 200
+  ctx.body = confirmBody()
+}
+
+async function unfollow(
+  ctx: ParameterizedContext<any, Router.RouterParamContext<any, any>, any>
+) {
+  const { user } = ctx.state
+  await userCollection()
+    .doc(user.username)
+    .update({
+      following: firestore.FieldValue.arrayRemove(ctx.request.body.channel),
+    })
   ctx.status = 200
   ctx.body = confirmBody()
 }

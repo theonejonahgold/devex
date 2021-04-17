@@ -12,6 +12,15 @@
     background: none;
     border: none;
     margin-left: var(--half-space);
+    border-radius: 0;
+  }
+
+  button:nth-child(3):last-child {
+    margin-left: auto;
+  }
+
+  button:hover :global(svg *) {
+    fill: var(--green);
   }
 </style>
 

@@ -8,8 +8,13 @@
   xml:space="preserve"
   style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
 >
+  <style>
+    path {
+      fill: #fff;
+    }
+  </style>
   <path
     d="M256.25,0l-220.833,0c-19.53,0 -35.417,15.887 -35.417,35.417l0,220.833c0,19.529 15.887,35.417 35.417,35.417l220.833,-0c19.529,-0 35.417,-15.888 35.417,-35.417l-0,-220.833c-0,-19.53 -15.888,-35.417 -35.417,-35.417Z"
-    style="fill:#fff;fill-rule:nonzero;"
+    style="fill-rule:nonzero;"
   />
 </svg>

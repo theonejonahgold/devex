@@ -30,7 +30,7 @@ This repository consists of two packages: `web` and `server`. The `web` package 
 ```
 └─ real-time-web-2021
    ├─ docs - Documentation folder.
-   ├─ server - NodeJS app.  
+   ├─ server - NodeJS app.
    └─ web - Web app.
 ```
 
@@ -72,13 +72,14 @@ $ yarn format # Formats files with incorrect syntax.
 ## Features
 
 - [x] Register.
-- [x] Log in. 
+- [x] Log in.
 - [x] Live stream video from broadcasting software like OBS.
   - [x] Authenticate your stream with a stream key.
-- [ ] View streams.
-- [ ] Chat on other people's streams.
+- [x] View streams.
+- [x] Chat on other people's streams.
+- [x] Set stream title.
 - [ ] Follow other profiles.
-  
+
 ### Wishlist
 
 - Persistent chat message storage.

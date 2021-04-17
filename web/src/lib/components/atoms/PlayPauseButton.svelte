@@ -16,6 +16,9 @@
     border: none;
     cursor: pointer;
   }
+  button:hover :global(*) {
+    fill: var(--green);
+  }
 </style>
 
 <button on:click={toggleBoolStore(paused)}>

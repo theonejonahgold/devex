@@ -10,6 +10,11 @@
   xml:space="preserve"
   style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;fill:white;"
 >
+  <style>
+    path {
+      fill: #fff;
+    }
+  </style>
   {#if $fullscreen}
     <path
       d="M12.5,220.417l85,-0l-0,85c-0,7.083 5.417,12.5 12.5,12.5c7.083,-0 12.5,-5.417 12.5,-12.5l0,-97.5c0,-7.084 -5.417,-12.5 -12.5,-12.5l-97.5,-0c-7.083,-0 -12.5,5.416 -12.5,12.5c-0,7.083 5.417,12.5 12.5,12.5Z"

@@ -68,9 +68,9 @@ function main() {
           console.error(err)
           session.reject()
         })
-        .finally(() => {
-          removePlaylist(username)
-        })
+      // .finally(() => {
+      //   removePlaylist(username)
+      // })
     }
   )
 
