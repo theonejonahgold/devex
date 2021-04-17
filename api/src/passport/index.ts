@@ -3,16 +3,14 @@ import passport from 'koa-passport'
 import { ExtractJwt, Strategy as JwtStrategy } from 'passport-jwt'
 import { Strategy as LocalStrategy } from 'passport-local'
 import { DBUser, User } from 'types/user'
-import firebase, { userCollection } from '../firebase'
+import { userCollection } from '../firebase'
 import { secret } from '../utils'
 
 // @ts-ignore
 passport.serializeUser((user: User, done) => done(null, user.username))
 
 passport.deserializeUser((username: string, done) => {
-  firebase()
-    .firestore()
-    .collection('users')
+  userCollection()
     .doc(username)
     .get()
     .then(val => done(null, val.data()))
