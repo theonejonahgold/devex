@@ -5,6 +5,10 @@
   import type { Socket } from 'socket.io-client'
   import { onDestroy } from 'svelte'
   import Followee from '../molecules/Followee.svelte'
+  import CollapseButton from '../atoms/CollapseButton.svelte'
+  import { cubicInOut } from 'svelte/easing'
+  import { blur } from 'svelte/transition'
+  import { blurTransitionConfig } from '$lib/constants/transition'
 
   export let collapsed = false
 
@@ -50,11 +54,30 @@
     background: var(--tertiary);
     grid-area: sidebar;
     width: 16.6666667vw;
+    transition: width 0.2s ease, padding 0.2s ease;
+    border-right: 2px solid rgba(255, 255, 255, 0.3);
   }
 
   .collapsed {
     padding: var(--base-space) var(--half-space);
     width: var(--quadruple-space);
+  }
+
+  .collapsed header {
+    justify-content: center;
+  }
+
+  .collapsed header :global(button) {
+    margin-left: initial;
+  }
+
+  header {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  header :global(button) {
+    margin-left: auto;
   }
 
   ul {
@@ -66,13 +89,17 @@
   h2 {
     font-size: var(--step-1);
     font-weight: bold;
+    line-height: 1;
   }
 </style>
 
 <aside class:collapsed>
-  {#if !collapsed}
-    <h2 class="h3">Following</h2>
-  {/if}
+  <header>
+    {#if !collapsed}
+      <h2 transition:blur|local={blurTransitionConfig} class="h3">Following</h2>
+    {/if}
+    <CollapseButton bind:collapsed invert={false} />
+  </header>
   <ul>
     {#each [...streamerMap.entries()] as [_, streamer]}
       <li>

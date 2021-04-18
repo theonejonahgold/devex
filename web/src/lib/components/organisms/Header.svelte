@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { page } from '$app/stores'
   import { userProfile } from '$lib/stores/user'
   import { createEventDispatcher } from 'svelte'
   import HeaderProfile from '../molecules/HeaderProfile.svelte'
@@ -23,6 +24,11 @@
     align-items: center;
     position: relative;
     z-index: 1;
+    background: var(--tertiary);
+  }
+
+  header :global(button) {
+    background: var(--secondary);
   }
 
   nav {
@@ -32,7 +38,7 @@
     align-items: center;
   }
 
-  a {
+  nav a {
     font-size: var(--step-1);
     margin-left: var(--base-space);
     text-decoration: none;
@@ -45,8 +51,9 @@
       color 0.2s ease;
   }
 
-  a:hover,
-  a:focus {
+  nav a:hover,
+  nav a:focus,
+  .active {
     color: var(--green);
     background-size: 100% 2px;
     background-position: 0% 100%;
@@ -54,6 +61,18 @@
 
   h1 {
     line-height: 1.125;
+  }
+
+  h1 a {
+    font-size: inherit;
+    font-weight: inherit;
+    font-family: inherit;
+    text-decoration: none;
+  }
+
+  h1 a:hover,
+  h1 a:focus {
+    color: var(--green);
   }
 
   button:first-of-type {
@@ -66,10 +85,11 @@
 </style>
 
 <header>
-  <h1>DevEx</h1>
+  <h1><a href="/">DevEx</a></h1>
   <nav>
-    <a href="/">Discover</a>
-    <a href="/languages">Languages</a>
+    <a class:active={$page.path === '/'} href="/">Discover</a>
+    <a class:active={$page.path === '/languages'} href="/languages">Languages</a
+    >
     {#if !$userProfile}
       <button on:click={openLoginModal}>Log in</button>
       <button on:click={openRegisterModal}>Register</button>

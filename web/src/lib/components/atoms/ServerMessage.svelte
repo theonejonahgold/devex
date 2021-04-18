@@ -6,7 +6,7 @@
   li {
     margin: var(--half-space) 0 var(--base-space);
     font-size: var(--step--1);
-    color: var(--tertiary);
+    color: var(--primary);
   }
 </style>
 

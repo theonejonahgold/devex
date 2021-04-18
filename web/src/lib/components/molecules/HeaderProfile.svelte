@@ -6,8 +6,8 @@
   a {
     font-size: var(--step-1);
     color: var(--primary);
-    background: var(--tertiary);
-    border: 2px solid var(--tertiary);
+    background: var(--secondary);
+    border: 2px solid var(--secondary);
     border-radius: 5px;
     cursor: pointer;
     padding: 0.125em 0.375em;

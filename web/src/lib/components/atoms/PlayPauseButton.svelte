@@ -9,13 +9,14 @@
   button {
     width: var(--step-1);
     height: var(--step-0);
-    margin-right: var(--half-space);
     padding: 0;
     margin: 0;
+    margin-right: var(--half-space);
     background: none;
     border: none;
     cursor: pointer;
   }
+
   button:hover :global(*) {
     fill: var(--green);
   }

@@ -7,6 +7,7 @@
     level,
     showOverlay,
     autoLevel,
+    paused,
   } from '$lib/stores/stream'
   import Hls from 'hls.js'
   import {
@@ -20,6 +21,9 @@
   import StreamControls from '../molecules/StreamControls.svelte'
   import LiveIcon from '../atoms/LiveIcon.svelte'
   import { userProfile } from '$lib/stores/user'
+  import BufferOverlay from '../atoms/BufferOverlay.svelte'
+  import VideoOverlay from '../atoms/VideoOverlay.svelte'
+  import PlayOverlay from '../atoms/PlayOverlay.svelte'
 
   export let stream: string = ''
   export let poster: string = ''
@@ -30,6 +34,8 @@
   let hls: Hls
   let section: any
   let videoEl: HTMLVideoElement
+  let buffering: boolean
+  let initialPlay: boolean = true
 
   function onFollowButtonHandler() {
     dispatch('follow-click')
@@ -80,12 +86,30 @@
     debounceHideOverlay()
   }
 
-  onMount(() => {
-    debounceHideOverlay()
-  })
+  function toggleBuffering() {
+    buffering = !buffering
+  }
+
+  onMount(() => debounceHideOverlay())
 
   afterUpdate(() => {
-    if (!user.live || hls) return
+    if (!user.live && hls) {
+      hls?.destroy()
+      if (browser) {
+        document.removeEventListener(
+          'fullscreenchange',
+          fullscreenChangeHandler
+        )
+        document.removeEventListener(
+          'webkitfullscreenchange',
+          fullscreenChangeHandler
+        )
+        videoEl.removeEventListener('waiting', toggleBuffering)
+        videoEl.removeEventListener('playing', toggleBuffering)
+      }
+      return
+    }
+    if ((hls && user.live) || !user.live) return
     if (Hls.isSupported()) {
       hls = new Hls({ startLevel: -1 })
       hls.attachMedia(videoEl)
@@ -99,9 +123,25 @@
           level.set(data.level)
         if (currentSavedLevel === -1) autoLevel.set(data.level)
       })
+      hls.on(Hls.Events.ERROR, (_, data) => {
+        if (!data.fatal) return
+        switch (data.type) {
+          case Hls.ErrorTypes.NETWORK_ERROR:
+            hls.startLoad()
+            break
+          case Hls.ErrorTypes.MEDIA_ERROR:
+            hls.recoverMediaError()
+            break
+          default:
+            hls.destroy()
+            break
+        }
+      })
     } else if (videoEl.canPlayType('application/vnd.apple.mpegurl')) {
       videoEl.src = stream
     }
+    videoEl.addEventListener('waiting', toggleBuffering)
+    videoEl.addEventListener('playing', toggleBuffering)
     document.addEventListener('fullscreenchange', fullscreenChangeHandler)
     document.addEventListener('webkitfullscreenchange', fullscreenChangeHandler)
   })
@@ -115,6 +155,7 @@
         fullscreenChangeHandler
       )
     }
+    paused.set(true)
   })
 </script>
 
@@ -134,7 +175,7 @@
 
   header {
     padding: var(--base-space) var(--base-space) var(--double-space);
-    z-index: 1;
+    z-index: 2;
     grid-row: 1;
     grid-column: 1;
     align-self: start;
@@ -180,7 +221,24 @@
     </div>
   </header>
   {#if user.live}
+    {#if buffering || initialPlay}
+      <VideoOverlay>
+        {#if buffering}
+          <BufferOverlay />
+        {/if}
+        {#if initialPlay}
+          <PlayOverlay
+            on:click={() => {
+              paused.set(false)
+              initialPlay = false
+            }}
+          />
+        {/if}
+      </VideoOverlay>
+    {/if}
     <VideoElement {poster} bind:videoEl />
   {/if}
-  <StreamControls />
+  {#if user.live}
+    <StreamControls />
+  {/if}
 </section>

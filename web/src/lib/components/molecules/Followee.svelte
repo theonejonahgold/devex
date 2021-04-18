@@ -1,6 +1,4 @@
 <script>
-  import { cubicInOut } from 'svelte/easing'
-  import { blur } from 'svelte/transition'
   import FollowBulb from '../atoms/FollowBulb.svelte'
 
   export let streamer: Streamer
@@ -21,7 +19,7 @@
   }
 
   a:hover :global(p:first-child) {
-    border: 5px solid var(--green);
+    border: 2px solid var(--green);
   }
 
   h1,
@@ -38,9 +36,12 @@
   }
 </style>
 
-<a href="/{streamer.username}">
+<a
+  
+  href="/{streamer.username}"
+>
   <article>
-    <FollowBulb username={streamer.username} bind:live={streamer.live} />
+    <FollowBulb  username={streamer.username} bind:live={streamer.live} />
     {#if !collapsed}
       <h1 class="h3">
         {streamer.streamTitle}

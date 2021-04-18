@@ -70,7 +70,7 @@
 <style>
   div {
     display: grid;
-    grid-template-columns: 4fr 1fr;
+    grid-template-columns: auto min-content;
     height: 100%;
   }
   div:not(:only-child) {
@@ -79,6 +79,11 @@
   aside {
   }
 </style>
+
+<svelte:head>
+  <title>{user.username} - DevEx</title>
+  <meta name="description" content="The DevEx channel of {user.username}" />
+</svelte:head>
 
 <div>
   <Stream

@@ -4,14 +4,13 @@
   import LevelSelect from '../atoms/LevelSelect.svelte'
   import PlayPauseButton from '../atoms/PlayPauseButton.svelte'
   import VolumeControls from '../atoms/VolumeControls.svelte'
-
 </script>
 
 <style>
   section {
     grid-row: 1;
     grid-column: 1;
-    z-index: 1;
+    z-index: 2;
     align-self: end;
     width: 100%;
     display: flex;
@@ -30,6 +29,6 @@
 <section class:hidden={!$showOverlay}>
   <PlayPauseButton />
   <VolumeControls />
-  <LevelSelect  />
+  <LevelSelect />
   <FullscreenButton />
 </section>

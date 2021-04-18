@@ -59,6 +59,11 @@
   }
 </style>
 
+<svelte:head>
+  <title>Discover - DevEx</title>
+  <meta name="description" content="Discover popular live channels" />
+</svelte:head>
+
 <main>
   <h2>Discover</h2>
   <ul>
