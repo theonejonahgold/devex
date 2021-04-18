@@ -25,7 +25,6 @@ export default function createMeNamespace(io: Server) {
     const stop = userCollection()
       .doc(socket.data.user.username)
       .onSnapshot(snap => {
-        console.log('hoi')
         const user = snap.data()!
         const filteredUser = {
           username: user.username,

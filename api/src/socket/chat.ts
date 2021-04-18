@@ -19,10 +19,6 @@ export default function createChatNamespace(
         message: 'Welcome to the chat room!',
         type: 'server',
       })
-      userCollection()
-        .doc(chat)
-        .update({ viewers: chatNSP.adapter.rooms.get(chat)?.size })
-        .catch(console.error)
     })
 
     socket.on('message', async ({ message, user: username, hue }) => {
