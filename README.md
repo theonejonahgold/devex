@@ -52,17 +52,21 @@ $ yarn format # Formats files with incorrect syntax.
 - Husky
 - Docker
 
-### Server package
+### API package
 
 - NodeJS
 - KoaJS
-- Firebase Firestore and Storage
+- Firebase Firestore
 - Socket.IO
-- RTMP-server
-- HLS-server
-- FFmpeg
 - Passport.JS
 - Argon2
+
+### Stream package
+
+- NodeJS
+- Node-Media-Server
+- Node-Fetch
+- FFmpeg
 
 ### Web package
 
@@ -78,7 +82,7 @@ $ yarn format # Formats files with incorrect syntax.
 - [x] View streams.
 - [x] Chat on other people's streams.
 - [x] Set stream title.
-- [ ] Follow other profiles.
+- [x] Follow other profiles.
 
 ### Wishlist
 
