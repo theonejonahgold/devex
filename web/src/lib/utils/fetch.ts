@@ -12,6 +12,6 @@ export function getApiURL() {
 
 export function getStreamURL() {
   return import.meta.env.PROD
-    ? 'https://devex.jonahgold.dev/stream'
+    ? 'https://devex.jonahgold.dev'
     : 'http://localhost:8000'
 }
