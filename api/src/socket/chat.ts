@@ -14,7 +14,6 @@ export default function createChatNamespace(
     let user: string
 
     socket.on('join', ({ room, username }) => {
-      console.log(username)
       if (username && room !== username) {
         user = username
         chatNSP.to(room).emit('message', {

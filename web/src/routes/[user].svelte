@@ -42,7 +42,6 @@
   function followHandler() {
     let url: string = `${getApiURL()}/follow`
     if (following) url = `${getApiURL()}/unfollow`
-    console.log(url, get(userToken))
     fetch(url, {
       method: 'POST',
       headers: {

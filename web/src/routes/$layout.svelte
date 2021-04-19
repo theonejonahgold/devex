@@ -15,7 +15,6 @@
   const { navigating } = getStores()
 
   $: if ($navigating) {
-    console.log($navigating)
     if ((<any>$navigating.to).path !== '/') sidebarCollapsed = true
     else sidebarCollapsed = false
   }

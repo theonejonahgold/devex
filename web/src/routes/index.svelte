@@ -28,7 +28,6 @@
       path: '/api/socket.io/',
     })
     socket.on('update', update => {
-      console.log()
       streamers = update
     })
   })

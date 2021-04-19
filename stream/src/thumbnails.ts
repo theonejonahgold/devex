@@ -11,7 +11,7 @@ export default async function thumbnails() {
   await mkdirp(thumbnailPath)
   const streams = readdirSync(streamPath)
   try {
-    const results = await Promise.all(
+    await Promise.all(
       streams.map(stream =>
         // command from: https://stackoverflow.com/questions/53854681/ffmpeg-create-thumbnail-from-hls-live-stream
         childPromise(
@@ -32,7 +32,6 @@ export default async function thumbnails() {
         )
       )
     )
-    console.log(results)
   } catch (err) {
     console.error(err)
   }
