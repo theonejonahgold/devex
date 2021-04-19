@@ -6,6 +6,7 @@
   import RegisterModal from '$lib/components/organisms/RegisterModal.svelte'
   import Following from '$lib/components/organisms/Following.svelte'
   import { get } from 'svelte/store'
+  import { userProfile } from '$lib/stores/user'
 
   let loginModal: boolean
   let registerModal: boolean
@@ -24,7 +25,9 @@
   on:login-modal={() => (loginModal = !loginModal)}
   on:register-modal={() => (registerModal = !registerModal)}
 />
-<Following bind:collapsed={sidebarCollapsed} />
+{#if $userProfile}
+  <Following bind:collapsed={sidebarCollapsed} />
+{/if}
 <main>
   <slot />
 </main>
