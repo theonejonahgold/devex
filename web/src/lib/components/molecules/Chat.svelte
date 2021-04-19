@@ -42,21 +42,19 @@
       },
     })
 
-    socket.on('connect', () => socket.emit('join', { room: channel }))
+    socket.on('connect', () =>
+      socket.emit('join', { room: channel, username: $userProfile?.username })
+    )
 
-    socket.on('server-message', async (message: ServerMessageType) => {
-      const scroll = list.scrollTop == list.scrollHeight - list.offsetHeight
-      messages = [...messages, message]
-      await tick()
-      if (scroll) list.scrollTop = list.scrollHeight
-    })
-
-    socket.on('message', async (message: ChatMessageType) => {
-      const scroll = list.scrollTop == list.scrollHeight - list.offsetHeight
-      messages = [...messages, message]
-      await tick()
-      if (scroll) list.scrollTop = list.scrollHeight
-    })
+    socket.on(
+      'message',
+      async (message: ChatMessageType | ServerMessageType) => {
+        const scroll = list.scrollTop == list.scrollHeight - list.offsetHeight
+        messages = [...messages, message]
+        await tick()
+        if (scroll) list.scrollTop = list.scrollHeight
+      }
+    )
   })
 
   onDestroy(() => socket?.disconnect())

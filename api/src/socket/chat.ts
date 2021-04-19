@@ -11,11 +11,20 @@ export default function createChatNamespace(
 
   chatNSP.on('connection', async socket => {
     let chat: string
+    let user: string
 
-    socket.on('join', ({ room }) => {
+    socket.on('join', ({ room, username }) => {
+      console.log(username)
+      if (username && room !== username) {
+        user = username
+        chatNSP.to(room).emit('message', {
+          message: `${username} joined the chat!`,
+          type: 'server',
+        })
+      }
       socket.join(room)
       chat = room
-      socket.emit('server-message', {
+      socket.emit('message', {
         message: 'Welcome to the chat room!',
         type: 'server',
       })
@@ -42,6 +51,10 @@ export default function createChatNamespace(
         hue,
         type: 'chat',
       })
+    })
+
+    socket.on('disconnect', () => {
+      if (user) io.to(chat).emit(`${user} left the chat.`)
     })
   })
 }
