@@ -1,5 +1,8 @@
 FROM node:14-alpine3.12
 
+ARG NODE_ENV
+ENV NODE_ENV=$NODE_ENV
+
 COPY --from=builder /build /build
 
 COPY . /build/web
