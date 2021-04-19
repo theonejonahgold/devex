@@ -21,3 +21,7 @@ export function userCollection() {
     'users'
   ) as FirebaseFirestore.CollectionReference<DBUser>
 }
+
+export function languagesCollection() {
+  return dbCollection(firebaseApp, 'languages')
+}

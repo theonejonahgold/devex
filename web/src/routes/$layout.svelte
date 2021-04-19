@@ -10,13 +10,23 @@
 
   let loginModal: boolean
   let registerModal: boolean
-  let sidebarCollapsed: boolean = get(page).path !== '/'
+  let sidebarCollapsed: boolean =
+    get(page).path !== '/' && !get(page).path.startsWith('/languages')
 
   const { navigating } = getStores()
 
   $: if ($navigating) {
-    if ((<any>$navigating.to).path !== '/') sidebarCollapsed = true
-    else sidebarCollapsed = false
+    if (
+      (<any>$navigating.from).path !== '/' &&
+      !(<any>$navigating.from).path.startsWith('/languages')
+    ) {
+      if (
+        (<any>$navigating.to).path !== '/' &&
+        !(<any>$navigating.to).path.startsWith('/languages')
+      )
+        sidebarCollapsed = true
+      else sidebarCollapsed = false
+    }
   }
 </script>
 

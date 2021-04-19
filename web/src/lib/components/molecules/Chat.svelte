@@ -65,9 +65,13 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    width: 16.6666667vw;
+    width: max(16.6666667vw, 20rem);
     height: 100%;
     transition: padding 0.2s ease, width 0.2s ease;
+  }
+
+  section:not(:last-child) {
+    grid-row: span 2;
   }
 
   .collapsed {

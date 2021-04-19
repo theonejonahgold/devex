@@ -12,7 +12,6 @@ import createChatNamespace from './socket/chat'
 import createWatchNamespace from './socket/watch'
 import createMeNamespace from './socket/me'
 import createFollowingNamespace from './socket/following'
-import createDiscoverNamespace from './socket/discover'
 
 main()
 
@@ -34,5 +33,4 @@ function main() {
   createWatchNamespace(io)
   createFollowingNamespace(io)
   createMeNamespace(io)
-  createDiscoverNamespace(io)
 }

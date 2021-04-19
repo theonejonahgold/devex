@@ -2,7 +2,7 @@ import fetch from 'node-fetch'
 import NodeMediaServer from 'node-media-server'
 import config from './config'
 import createPlaylist, { removePlaylist } from './playlist'
-import thumbnails from './thumbnails'
+import thumbnails, { createInitialThumbnail } from './thumbnails'
 
 main()
 
@@ -41,6 +41,7 @@ function main() {
     if (streamPath.indexOf('hls_') === -1) return
     const name = streamPath.split('/').pop()
     createPlaylist(name!).catch(console.error)
+    createInitialThumbnail(name!)
   })
 
   nms.on(
@@ -68,9 +69,6 @@ function main() {
           console.error(err)
           session.reject()
         })
-      // .finally(() => {
-      //   removePlaylist(username)
-      // })
     }
   )
 

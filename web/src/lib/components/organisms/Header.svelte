@@ -31,6 +31,10 @@
     background: var(--secondary);
   }
 
+  header :global(button:not(:hover)) {
+    border-color: var(--secondary);
+  }
+
   nav {
     margin-left: var(--base-space);
     display: flex;
@@ -43,20 +47,16 @@
     margin-left: var(--base-space);
     text-decoration: none;
     font-weight: 500;
-    background-image: linear-gradient(var(--green), var(--green));
-    background-size: 0% 2px;
-    background-position: 50% 100%;
-    background-repeat: no-repeat;
-    transition: background-size 0.2s ease, background-position 0.2s ease,
-      color 0.2s ease;
+    background: linear-gradient(currentColor 0 0) bottom/var(--d, 0) 2px
+      no-repeat;
+    transition: 0.2s ease;
   }
 
   nav a:hover,
   nav a:focus,
   .active {
     color: var(--green);
-    background-size: 100% 2px;
-    background-position: 0% 100%;
+    --d: 100%;
   }
 
   h1 {
@@ -68,11 +68,6 @@
     font-weight: inherit;
     font-family: inherit;
     text-decoration: none;
-  }
-
-  h1 a:hover,
-  h1 a:focus {
-    color: var(--green);
   }
 
   button:first-of-type {
@@ -88,7 +83,8 @@
   <h1><a href="/">DevEx</a></h1>
   <nav>
     <a class:active={$page.path === '/'} href="/">Discover</a>
-    <a class:active={$page.path === '/languages'} href="/languages">Languages</a
+    <a class:active={$page.path.startsWith('/languages')} href="/languages"
+      >Languages</a
     >
     {#if !$userProfile}
       <button on:click={openLoginModal}>Log in</button>

@@ -1,14 +1,16 @@
 <script context="module">
-  import { getApiURL } from '$lib/utils/fetch'
-
   import type { Load } from '@sveltejs/kit'
 
-  export const load: Load = async function ({ fetch }) {
-    const res = await fetch(getApiURL() + '/discovery')
-    const json = await res.json()
+  export const load: Load = async function ({ page, fetch }) {
+    const url = `${getApiURL()}/languages/${page.params.language}`
+    const res = await fetch(url)
+    const data = await res.json()
+
+    if (!res.ok) return { status: res.status, error: data.error }
     return {
       props: {
-        streamers: json.data.users,
+        streamers: data.data.streamers,
+        language: data.data.language,
       },
     }
   }
@@ -16,8 +18,10 @@
 
 <script lang="ts">
   import DiscoverStream from '$lib/components/molecules/DiscoverStream.svelte'
+  import { getApiURL } from '$lib/utils/fetch'
 
   export let streamers: Streamer[] = []
+  export let language: Language
 </script>
 
 <style>
@@ -52,12 +56,12 @@
 </style>
 
 <svelte:head>
-  <title>Discover - DevEx</title>
+  <title>{language.name} - DevEx</title>
   <meta name="description" content="Discover popular live channels" />
 </svelte:head>
 
 <div>
-  <h2>Discover</h2>
+  <h2>{language.name}</h2>
   <ul>
     {#each streamers as streamer}
       <li>

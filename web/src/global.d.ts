@@ -20,3 +20,10 @@ type Streamer = {
   live: boolean
   streamTitle: string
 }
+
+type Language = {
+  name: string
+  slug: string
+  releaseYear: number
+  logo: string
+}

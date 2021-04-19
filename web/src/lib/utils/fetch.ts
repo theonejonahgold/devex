@@ -15,3 +15,9 @@ export function getStreamURL() {
     ? 'https://devex.jonahgold.dev'
     : 'http://localhost:8000'
 }
+
+export function getRtmpURL() {
+  return import.meta.env.PROD
+    ? 'rtmp://devex.jonahgold.dev/stream'
+    : 'rtmp://localhost:8000/stream'
+}

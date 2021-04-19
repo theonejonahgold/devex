@@ -6,7 +6,7 @@ import { Next, ParameterizedContext } from 'koa'
 import passport from 'koa-passport'
 import { DBUser, UserInput } from 'types/user'
 import { v4 as uuid } from 'uuid'
-import { userCollection } from '../firebase'
+import { languagesCollection, userCollection } from '../firebase'
 import { secret } from '../utils'
 import { confirmBody, dataBody, errorBody } from './utils'
 
@@ -15,11 +15,14 @@ export default new Router({ prefix: '/api' })
   .post('/login', login)
   .post('/live', live)
   .get('/discovery', discovery)
+  .get('/languages', languages)
+  .get('/languages/:language', language)
   .get('/user/:username', user)
   .use(passport.authenticate('jwt', { session: false }))
   .post('/follow', follow)
   .post('/unfollow', unfollow)
   .post('/title', title)
+  .post('/language', updateLanguage)
 
 async function register(
   ctx: ParameterizedContext<any, Router.RouterParamContext<any, {}>, any>
@@ -99,6 +102,37 @@ async function discovery(
   ctx.status = 200
   ctx.body = dataBody({
     users,
+  })
+}
+
+async function languages(
+  ctx: ParameterizedContext<any, Router.RouterParamContext<any, {}>, any>
+) {
+  const languages = (await languagesCollection().get()).docs
+    .map(doc => doc.data())
+    .filter(doc => !!doc)
+  ctx.body = dataBody({ languages })
+  ctx.status = 200
+}
+
+async function language(
+  ctx: ParameterizedContext<any, Router.RouterParamContext<any, {}>, any>
+) {
+  const langRes = (
+    await languagesCollection().where('slug', '==', ctx.params.language).get()
+  ).docs[0]
+  if (!langRes.exists) {
+    ctx.body = errorBody('Language not found')
+    ctx.status = 404
+    return
+  }
+  const streamersRes = await userCollection()
+    .where('language', '==', ctx.params.language)
+    .get()
+  ctx.status = 200
+  ctx.body = dataBody({
+    language: langRes.data(),
+    streamers: streamersRes.docs.map(doc => doc.data()),
   })
 }
 
@@ -184,6 +218,17 @@ async function unfollow(
     .update({
       following: firestore.FieldValue.arrayRemove(ctx.request.body.channel),
     })
+  ctx.status = 200
+  ctx.body = confirmBody()
+}
+
+async function updateLanguage(
+  ctx: ParameterizedContext<any, Router.RouterParamContext<any, any>, any>
+) {
+  const { user } = ctx.state
+  await userCollection()
+    .doc(user.username)
+    .update({ language: ctx.body.language })
   ctx.status = 200
   ctx.body = confirmBody()
 }

@@ -4,20 +4,20 @@
   import type { Load } from '@sveltejs/kit'
 
   export const load: Load = async function ({ fetch }) {
-    const res = await fetch(getApiURL() + '/discovery')
+    const res = await fetch(getApiURL() + '/languages')
     const json = await res.json()
     return {
       props: {
-        streamers: json.data.users,
+        languages: json.data.languages,
       },
     }
   }
 </script>
 
 <script lang="ts">
-  import DiscoverStream from '$lib/components/molecules/DiscoverStream.svelte'
+  import LanguageItem from '$lib/components/molecules/LanguageItem.svelte'
 
-  export let streamers: Streamer[] = []
+  export let languages: Language[] = []
 </script>
 
 <style>
@@ -34,6 +34,7 @@
   }
 
   ul {
+    align-self: start;
     list-style: none;
     padding: 0;
     margin: 0;
@@ -45,23 +46,25 @@
   }
 
   li {
-    flex: 0 1 30rem;
     margin-right: var(--base-space);
     margin-bottom: var(--base-space);
   }
 </style>
 
 <svelte:head>
-  <title>Discover - DevEx</title>
-  <meta name="description" content="Discover popular live channels" />
+  <title>Languages - DevEx</title>
+  <meta
+    name="description"
+    content="All programming languages available on this site"
+  />
 </svelte:head>
 
 <div>
-  <h2>Discover</h2>
+  <h2>Languages</h2>
   <ul>
-    {#each streamers as streamer}
+    {#each languages as language}
       <li>
-        <DiscoverStream {streamer} />
+        <LanguageItem {language} />
       </li>
     {/each}
   </ul>
