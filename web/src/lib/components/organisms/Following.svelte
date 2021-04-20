@@ -53,7 +53,7 @@
     padding: var(--base-space);
     background: var(--tertiary);
     grid-area: sidebar;
-    width: max(16.6666667vw, 20rem);
+    width: max(16.6666667vw, 25rem);
     transition: width 0.2s ease, padding 0.2s ease;
     border-right: 2px solid rgba(255, 255, 255, 0.3);
   }

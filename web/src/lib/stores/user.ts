@@ -24,10 +24,11 @@ export const userProfile = derived<
       streamKey: string
       live: boolean
       streamTitle: string
+      language: string
     }
   | undefined
 >([userToken], ([$userToken], set) => {
-  if (!$userToken || !browser) return
+  if (!$userToken || !browser) return set(undefined)
   const socket = io(getSocketURL() + '/me', {
     path: '/api/socket.io/',
     auth: {

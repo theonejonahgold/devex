@@ -19,6 +19,7 @@ type Streamer = {
   viewers: number
   live: boolean
   streamTitle: string
+  language: string
 }
 
 type Language = {

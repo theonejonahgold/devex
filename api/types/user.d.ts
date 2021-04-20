@@ -7,6 +7,7 @@ interface DBUser {
   live: boolean
   viewers: number
   streamKey: string
+  language: string
   streamTitle: string
   createdAt: firestore.Timestamp
   updatedAt: firestore.Timestamp

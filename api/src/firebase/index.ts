@@ -23,5 +23,8 @@ export function userCollection() {
 }
 
 export function languagesCollection() {
-  return dbCollection(firebaseApp, 'languages')
+  return dbCollection(
+    firebaseApp,
+    'languages'
+  ) as FirebaseFirestore.CollectionReference<DBLanguage>
 }

@@ -50,6 +50,7 @@ async function register(
       createdAt: firestore.Timestamp.now(),
       updatedAt: firestore.Timestamp.now(),
       streamTitle: '',
+      language: 'cobol',
     })
     const jwt = sign({ username }, secret, {
       audience: 'devex.jonahgold.dev',
@@ -90,9 +91,10 @@ async function discovery(
     'username',
     'live',
     'viewers',
-    'streamTitle'
+    'streamTitle',
+    'language'
   ) as FirebaseFirestore.Query<
-    Pick<DBUser, 'username' | 'live' | 'viewers' | 'streamTitle'>
+    Pick<DBUser, 'username' | 'live' | 'viewers' | 'streamTitle' | 'language'>
   >)
     .where('live', '==', true)
     .orderBy('viewers')
@@ -147,7 +149,10 @@ async function user(
     return
   }
   const user = result.data()!
-
+  if (user.language)
+    user.language = (
+      await languagesCollection().where('slug', '==', user.language).get()
+    ).docs[0].data().name
   ctx.status = 200
   ctx.body = dataBody({
     user: {
@@ -155,6 +160,7 @@ async function user(
       live: user.live,
       viewers: user.viewers,
       streamTitle: user.streamTitle,
+      language: user.language,
     },
   })
 }
@@ -228,7 +234,7 @@ async function updateLanguage(
   const { user } = ctx.state
   await userCollection()
     .doc(user.username)
-    .update({ language: ctx.body.language })
+    .update({ language: ctx.request.body.language })
   ctx.status = 200
   ctx.body = confirmBody()
 }

@@ -4,8 +4,8 @@
   import { createEventDispatcher } from 'svelte'
 
   const dispatch = createEventDispatcher()
-
-  let username: string
+  export let initialUsername = ''
+  let username = initialUsername
   let password: string
 
   function submitForm() {
@@ -40,6 +40,7 @@
     flex-wrap: wrap;
     align-items: center;
     margin-bottom: var(--base-space);
+    color: var(--tertiary);
     font-size: var(--step-1);
   }
 

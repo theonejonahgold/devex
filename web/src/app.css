@@ -111,6 +111,7 @@ p a {
   text-decoration: none;
   background: linear-gradient(currentColor 0 0) bottom/var(--d, 0) 2px no-repeat;
   transition: 0.2s ease;
+  color: var(--green);
 }
 
 p a:hover {
@@ -128,7 +129,8 @@ header + main {
 }
 
 input[type='text'],
-input[type='password'] {
+input[type='password'],
+.select-container {
   background: var(--tertiary);
   color: var(--primary);
   font-size: var(--step-0);
@@ -140,10 +142,46 @@ input[type='password'] {
 
 input[type='text']:hover,
 input[type='password']:hover,
+.select-container:hover,
 input[type='text']:focus,
-input[type='password']:focus {
+input[type='password']:focus,
+.select-container:focus {
   outline: none;
   border-color: var(--green);
+}
+
+select {
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-size: inherit;
+  width: 100%;
+}
+
+select:focus {
+  outline: none;
+}
+
+.select-container {
+  position: relative;
+  background: var(--tertiary);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.select-container:after {
+  position: absolute;
+  right: 0.375em;
+  text-align: right;
+  content: '\2B0D';
+  font-size: inherit;
+  pointer-events: none;
 }
 
 button {

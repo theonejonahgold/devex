@@ -1,6 +1,6 @@
 import { decode } from 'jsonwebtoken'
 import { Server } from 'socket.io'
-import { userCollection } from '../firebase'
+import { languagesCollection, userCollection } from '../firebase'
 
 const watchMap = new Map<string, () => void>()
 
@@ -33,13 +33,20 @@ export default function createFollowingNamespace(io: Server) {
         user,
         userCollection()
           .doc(user)
-          .onSnapshot(snap => {
+          .onSnapshot(async snap => {
             const data = snap.data()!
+            if (data.language)
+              data.language = (
+                await languagesCollection()
+                  .where('slug', '==', data.language)
+                  .get()
+              ).docs[0].data().name
             const filteredUser = {
               username: data.username,
               viewers: data.viewers,
               live: data.live,
               streamTitle: data.streamTitle,
+              language: data.language,
             }
             followingNSP.to(user).emit('update', filteredUser)
           })
@@ -75,13 +82,10 @@ export default function createFollowingNamespace(io: Server) {
 
       socket.on('disconnect', () => {
         socket.data.user.following.forEach((user: string) => {
-          if (
-            followingNSP.adapter.rooms.get(user) &&
-            followingNSP.adapter.rooms.get(user)!.size > 0
-          )
-            return
-          watchMap.get(user)?.()
-          watchMap.delete(user)
+          if (!followingNSP.adapter.rooms.get(user)?.size) {
+            watchMap.get(user)?.()
+            watchMap.delete(user)
+          }
         })
       })
     })

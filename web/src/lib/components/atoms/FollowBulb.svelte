@@ -10,10 +10,13 @@
 </script>
 
 <style>
-  p {
-    position: relative;
-    grid-row: 1 / span 3;
+  div {
+    grid-row: 1 / span 2;
     grid-column: 1;
+  }
+
+  .bulb {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -28,7 +31,7 @@
     background-color: var(--secondary);
   }
 
-  p:after {
+  .bulb:after {
     content: '';
     position: absolute;
     top: 0;
@@ -54,11 +57,14 @@
   }
 </style>
 
-<p
-  transition:scale|local={scaleTransitionConfig}
-  class:live
-  class:active
-  aria-label={username}
->
-  {username[0].toUpperCase()}
-</p>
+<div>
+  <p
+    class="bulb"
+    transition:scale|local={scaleTransitionConfig}
+    class:live
+    class:active
+    aria-label={username}
+  >
+    {username[0].toUpperCase()}
+  </p>
+</div>

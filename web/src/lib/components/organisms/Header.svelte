@@ -23,7 +23,7 @@
     border-bottom: 2px solid rgba(255, 255, 255, 0.3);
     align-items: center;
     position: relative;
-    z-index: 1;
+    z-index: 5;
     background: var(--tertiary);
   }
 
@@ -31,7 +31,7 @@
     background: var(--secondary);
   }
 
-  header :global(button:not(:hover)) {
+  header :global(button:not(:hover, :focus, .active)) {
     border-color: var(--secondary);
   }
 

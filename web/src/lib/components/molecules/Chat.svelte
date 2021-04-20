@@ -65,7 +65,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    width: max(16.6666667vw, 20rem);
+    width: max(16.6666667vw, 25rem);
     height: 100%;
     transition: padding 0.2s ease, width 0.2s ease;
   }

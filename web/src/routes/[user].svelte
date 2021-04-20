@@ -28,12 +28,7 @@
 
   let socket: Socket
 
-  export let user: {
-    username: string
-    live: boolean
-    viewers: number
-    streamTitle: string
-  }
+  export let user: Streamer
 
   $: following = !!$userProfile?.following.includes(user.username)
 
@@ -83,7 +78,7 @@
 <div>
   <Stream
     on:follow-click={followHandler}
-    bind:user
+    bind:streamer={user}
     bind:following
     stream={`${getStreamURL()}/live/${user.username}.m3u8`}
     poster={`${getStreamURL()}/thumbnails/${user.username}.jpg`}

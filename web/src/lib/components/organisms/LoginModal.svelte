@@ -2,8 +2,12 @@
   import Modal from '$lib/components/molecules/Modal.svelte'
   import { userToken } from '$lib/stores/user'
   import { createEventDispatcher } from 'svelte'
+  import FormError from '../atoms/FormError.svelte'
 
-  const dispatch = createEventDispatcher()
+  const dispatch = createEventDispatcher<{
+    close: undefined
+    'open-register': { username: string }
+  }>()
 
   let username: string
   let password: string
@@ -12,6 +16,8 @@
   let passwordError: string
 
   function submitForm() {
+    usernameError = ''
+    passwordError = ''
     fetch(
       import.meta.env.PROD
         ? 'https://devex.jonahgold.dev/api/login'
@@ -35,15 +41,19 @@
       })
       .catch(error => {
         if (error === 'Password incorrect') {
-          passwordError = 'The entered password is incorrect'
+          passwordError = 'The entered password is incorrect.'
           return
         }
         if (error === 'Username incorrect') {
-          usernameError = 'There is no account associated to this username'
+          usernameError = 'There is no account associated to this username.'
           return
         }
         console.error(error)
       })
+  }
+
+  function openRegisterForm() {
+    dispatch('open-register', { username })
   }
 </script>
 
@@ -53,6 +63,7 @@
     flex-wrap: wrap;
     align-items: center;
     margin-bottom: var(--base-space);
+    color: var(--tertiary);
     font-size: var(--step-1);
   }
 
@@ -67,12 +78,16 @@
     <label>
       Username
       <input autofocus type="text" name="username" bind:value={username} />
-      {#if usernameError}<p>{usernameError}</p>{/if}
+      {#if usernameError}<FormError
+          >{usernameError}
+          <button type="button" on:click={openRegisterForm}>Register now</button
+          >
+        </FormError>{/if}
     </label>
     <label>
       Password
       <input type="password" name="password" bind:value={password} />
-      {#if passwordError}<p>{passwordError}</p>{/if}
+      {#if passwordError}<FormError>{passwordError}</FormError>{/if}
     </label>
     <button class="large" type="submit">Log in</button>
   </form>

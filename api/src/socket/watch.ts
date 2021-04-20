@@ -1,5 +1,5 @@
 import { Server } from 'socket.io'
-import { userCollection } from '../firebase'
+import { languagesCollection, userCollection } from '../firebase'
 
 const watches = new Map<string, () => void>()
 
@@ -26,19 +26,28 @@ export default function createWatchNamespace(io: Server) {
 
       const stop = userCollection()
         .doc(channel)
-        .onSnapshot(snap => {
-          const data = snap.data()
+        .onSnapshot(async snap => {
+          const user = snap.data()!
+          if (user.language)
+            if (user.language)
+              user.language = (
+                await languagesCollection()
+                  .where('slug', '==', user.language)
+                  .get()
+              ).docs[0].data().name
           watchNSP.to(channel).emit('update', {
-            viewers: data?.viewers,
-            live: data?.live,
-            streamTitle: data?.streamTitle,
-            username: data?.username,
+            viewers: user.viewers,
+            live: user.live,
+            streamTitle: user.streamTitle,
+            username: user.username,
+            language: user.language,
           })
         })
       watches.set(channel, stop)
     })
 
     socket.on('disconnect', () => {
+      if (!watching) return
       userCollection()
         .doc(watching)
         .update({ viewers: watchNSP.adapter.rooms.get(watching)?.size || 0 })

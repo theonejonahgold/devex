@@ -24,7 +24,7 @@
     padding: var(--base-space);
   }
 
-  section :global(:not(input):not(button)) {
+  h1 {
     color: var(--tertiary);
   }
 
@@ -50,6 +50,12 @@
   }
 </style>
 
+<svelte:window
+  on:keydown={e => {
+    if (e.key === 'Escape') closeModal()
+  }}
+/>
+
 <section>
   <header>
     <h1>{title}</h1>
@@ -57,4 +63,4 @@
   </header>
   <slot />
 </section>
-<div />
+<div on:click={closeModal} />

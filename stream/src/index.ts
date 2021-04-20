@@ -41,7 +41,7 @@ function main() {
     if (streamPath.indexOf('hls_') === -1) return
     const name = streamPath.split('/').pop()
     createPlaylist(name!).catch(console.error)
-    createInitialThumbnail(name!)
+    setTimeout(() => createInitialThumbnail(name!), 10000)
   })
 
   nms.on(

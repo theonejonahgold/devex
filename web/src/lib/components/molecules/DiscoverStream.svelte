@@ -30,6 +30,11 @@
     text-decoration: none;
   }
 
+  a:hover,
+  a:focus {
+    color: var(--primary);
+  }
+
   a:hover img {
     border-color: var(--green);
   }
@@ -50,7 +55,7 @@
     justify-self: start;
     margin-bottom: var(--base-space);
     margin-left: var(--base-space);
-    background: rgba(0, 0, 0, 0.25);
+    background: rgba(0, 0, 0, 0.5);
     padding: 0.4em;
     border-radius: 5px;
     line-height: 1;

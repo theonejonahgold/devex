@@ -1,4 +1,4 @@
-<script lang="typescript">
+<script lang="ts">
   import '../app.css'
   import { getStores, page } from '$app/stores'
   import Header from '$lib/components/organisms/Header.svelte'
@@ -7,13 +7,18 @@
   import Following from '$lib/components/organisms/Following.svelte'
   import { get } from 'svelte/store'
   import { userProfile } from '$lib/stores/user'
+  import { tick } from 'svelte'
 
   let loginModal: boolean
   let registerModal: boolean
+  let unknownUsername: string
+
   let sidebarCollapsed: boolean =
     get(page).path !== '/' && !get(page).path.startsWith('/languages')
 
   const { navigating } = getStores()
+
+  $: console.log($navigating)
 
   $: if ($navigating) {
     if (
@@ -42,8 +47,22 @@
 </main>
 
 {#if loginModal}
-  <LoginModal on:close={() => (loginModal = false)} />
+  <LoginModal
+    on:close={() => (loginModal = false)}
+    on:open-register={async data => {
+      unknownUsername = data.detail.username
+      loginModal = false
+      await tick()
+      registerModal = true
+    }}
+  />
 {/if}
 {#if registerModal}
-  <RegisterModal on:close={() => (registerModal = false)} />
+  <RegisterModal
+    bind:initialUsername={unknownUsername}
+    on:close={() => {
+      unknownUsername = ''
+      registerModal = false
+    }}
+  />
 {/if}

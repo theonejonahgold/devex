@@ -8,6 +8,8 @@
     color: var(--primary);
     font-size: var(--step-0);
     font-family: var(--text-running);
+    display: flex;
+    align-items: center;
   }
 
   select {
@@ -17,14 +19,11 @@
     color: var(--primary);
     font-size: var(--step-0);
     font-family: var(--text-running);
-    border-radius: 0;
+    border-radius: 0; 
     cursor: pointer;
     border: 2px solid transparent;
     border-radius: 6px;
     padding: var(--quarter-space);
-  }
-
-  select:hover {
   }
 
   select:focus,

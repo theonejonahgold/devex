@@ -7,8 +7,8 @@
     "start": "svelte-kit start"
   },
   "devDependencies": {
-    "@sveltejs/adapter-node": "next",
-    "@sveltejs/kit": "^1.0.0-next.77",
+    "@sveltejs/adapter-node": "1.0.0-next.16",
+    "@sveltejs/kit": "1.0.0-next.80",
     "@types/debounce": "^1.2.0",
     "autoprefixer": "^10.2.5",
     "cssnano": "^5.0.0",
@@ -22,8 +22,8 @@
   },
   "type": "module",
   "dependencies": {
-    "socket.io-client": "^4.0.1",
     "hls.js": "^1.0.1",
+    "socket.io-client": "^4.0.1",
     "ts-debounce": "^3.0.0"
   }
 }

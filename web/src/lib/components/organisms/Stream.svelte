@@ -27,7 +27,7 @@
 
   export let stream: string = ''
   export let poster: string = ''
-  export let user: Streamer
+  export let streamer: Streamer
   export let following: boolean
 
   const dispatch = createEventDispatcher()
@@ -86,14 +86,14 @@
     debounceHideOverlay()
   }
 
-  function toggleBuffering() {
-    buffering = !buffering
+  function toggleBuffering(e: Event) {
+    buffering = e.type === 'waiting'
   }
 
   onMount(() => debounceHideOverlay())
 
   afterUpdate(() => {
-    if (!user.live && hls) {
+    if (!streamer.live && hls && videoEl) {
       hls?.destroy()
       if (browser) {
         document.removeEventListener(
@@ -109,7 +109,7 @@
       }
       return
     }
-    if ((hls && user.live) || !user.live) return
+    if ((hls && streamer.live) || !streamer.live) return
     if (Hls.isSupported()) {
       hls = new Hls({ startLevel: -1 })
       hls.attachMedia(videoEl)
@@ -154,6 +154,8 @@
         'webkitfullscreenchange',
         fullscreenChangeHandler
       )
+      videoEl?.removeEventListener('waiting', toggleBuffering)
+      videoEl?.removeEventListener('playing', toggleBuffering)
     }
     paused.set(true)
   })
@@ -181,13 +183,26 @@
     align-self: start;
     background: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
     transition: opacity 0.2s ease, transform 0.2s ease;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 75% 25%;
   }
 
   header.hidden {
     transform: translateY(-10%);
     opacity: 0;
+  }
+
+  header div div {
+    display: flex;
+    margin: var(--quarter-space) 0;
+  }
+
+  button {
+    margin-left: var(--half-space);
+  }
+
+  header h2 {
+    font-size: var(--step-3);
   }
 
   header h3 {
@@ -198,6 +213,23 @@
   header p {
     margin: var(--quarter-space) 0;
   }
+
+  header div:nth-of-type(2) p {
+    text-align: right;
+  }
+
+  .active {
+    color: var(--secondary);
+    background: var(--green);
+    border-color: var(--green);
+  }
+
+  .active:hover,
+  .active:focus {
+    color: var(--primary);
+    background: var(--red);
+    border-color: var(--red);
+  }
 </style>
 
 <section
@@ -207,20 +239,33 @@
 >
   <header class:hidden={!$showOverlay}>
     <div>
-      <h3>{user.username}</h3>
-      <p>{user.streamTitle}</p>
-      {#if $userProfile && $userProfile.username !== user.username}
-        <button on:click={onFollowButtonHandler}>
-          {following ? 'Unfollow' : 'Follow'}
-        </button>
+      <h2>{streamer.streamTitle}</h2>
+      <div>
+        <p class="h3">{streamer.username}</p>
+        {#if $userProfile && $userProfile.username !== streamer.username}
+          <button class:active={following} on:click={onFollowButtonHandler}>
+            {following ? 'Unfollow' : 'Follow'}
+          </button>
+        {/if}
+      </div>
+      {#if streamer.live}
+        {#if streamer.language}
+          <p>Coding in {streamer.language}</p>
+        {:else}
+          <p>Coding in some language</p>
+        {/if}
       {/if}
     </div>
     <div>
-      <LiveIcon bind:live={user.live} />
-      <p>{user.viewers === 1 ? '1 viewer' : `${user.viewers} viewers`}</p>
+      <LiveIcon bind:live={streamer.live} />
+      {#if streamer.live}
+        <p>
+          {streamer.viewers === 1 ? '1 viewer' : `${streamer.viewers} viewers`}
+        </p>
+      {/if}
     </div>
   </header>
-  {#if user.live}
+  {#if streamer.live}
     {#if buffering || initialPlay}
       <VideoOverlay>
         {#if buffering}
@@ -238,7 +283,7 @@
     {/if}
     <VideoElement {poster} bind:videoEl />
   {/if}
-  {#if user.live}
+  {#if streamer.live}
     <StreamControls />
   {/if}
 </section>
