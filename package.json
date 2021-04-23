@@ -7,10 +7,11 @@
     "prepare": "husky install",
     "lint": "prettier --check .",
     "format": "prettier --write .",
-    "predev": "docker-compose --file=docker-compose.init.yml build",
-    "dev": "docker-compose --file=docker-compose.dev.yml up --build",
-    "predocker": "docker-compose --file=docker-compose.init.yml build",
-    "docker": "docker-compose up --build"
+    "predev:up": "docker-compose --file=docker-compose.init.yml build",
+    "dev:up": "docker-compose --file=docker-compose.dev.yml up --build --detach",
+    "dev:down": "docker-compose --file=docker-compose.dev.yml down",
+    "preprod": "docker-compose --file=docker-compose.init.yml build",
+    "prod": "docker-compose up --build --detach"
   },
   "workspaces": [
     "web",

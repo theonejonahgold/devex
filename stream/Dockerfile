@@ -14,9 +14,7 @@ COPY . /build/stream
 
 WORKDIR /build/stream
 
-RUN yarn build
-
-RUN which ffmpeg
+RUN if [ $NODE_ENV == "production" ]; then yarn build; fi
 
 RUN if [ $NODE_ENV == "production" ]; then yarn install --frozen-lockfile; fi
 

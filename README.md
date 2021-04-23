@@ -1,21 +1,33 @@
 # DevEx
 
-The built-from-scratch live-streaming platform for all developers. Share your coding sessions live to the world for the world to enjoy.
+The built-from-scratch live-streaming platform for all developers. Share your coding sessions live to the world for everyone to enjoy!
 
 ## Table of contents
 
 - [Getting started](#getting-started)
+  - [Install the project](#install-the-project)
   - [Project setup](#project-setup)
   - [Available commands](#available-commands)
 - [Tech stack](#tech-stack)
+  - [API package](#api-package)
+  - [Stream package](#stream-package)
+  - [Web package](#web-package)
 - [Features](#features)
-  - [Wishlist](#wishlist)
+  - [Must haves](#must-haves)
+  - [Should haves](#should-haves)
+  - [Could haves](#could-haves)
+  - [Would like to haves](#would-like-to-haves)
 - [Sketches](#sketches)
 - [Data lifecycle](#data-lifecycle)
+- [What I've learned](#what-ive-learned)
 
 ## Getting started
 
-This project uses workspaces, and prefers [Yarn classic](https://classic.yarnpkg.com/lang/en/) over NPM. Both are however usable within this project.
+This project uses workspaces, and prefers [Yarn classic](https://classic.yarnpkg.com/lang/en/) over NPM as its package manager. For the best developer experience, use [Docker][docker] so you don't have to install [FFmpeg][ffmpeg] locally and setup environment variables yourself.
+
+This project also uses [Firebase](https://firebase.google.com). After you've set-up the project, create a Firebase app, add a service account for the Firestore and put the downloaded JSON file inside the `api` folder as `firebase.json`. Docker will do the rest. If you've never worked with Firebase before, [get started here](https://firebase.google.com/docs/guides).
+
+### Install the project
 
 ```shell
 $ git clone https://github.com/theonejonahgold/real-time-web-2021 rtw
@@ -25,55 +37,60 @@ $ yarn || npm install
 
 ### Project setup
 
-This repository consists of two packages: `web` and `server`. The `web` package is responsible for the web application that the user sees. The `server` package is a Node application handling all data used in the application via HTTP, WebSockets and RTMP streams.
-
 ```
 └─ real-time-web-2021
+   ├─ api - NodeJS CRUD api for 'web' and 'stream' packages.
    ├─ docs - Documentation folder.
-   ├─ server - NodeJS app.
-   └─ web - Web app.
+   ├─ stream - Node-media-server for ingesting RTMP streams and processing them to HLS.
+   └─ web - The web app you see at https://devex.jonahgold.dev.
 ```
 
 ### Available commands
 
 ```shell
-$ yarn dev # Runs dev server for both packages.
-$ yarn build # Builds both packages.
-$ yarn lint # Runs Prettier without writing fixes.
-$ yarn format # Formats files with incorrect syntax.
+$ yarn dev:up # Runs 'stream' and 'api' packages in docker and web outside of it due to a bug with SvelteKit.
+$ yarn dev:down # Shuts down docker containers for 'stream' and 'api'
+$ yarn prod # Run all packages inside of docker (for production).
+$ yarn format # Run prettier to format all project files.
+$ yarn lint # Run prettier to check formatting on all files.
 ```
+
+These commands are available from the root of the project, but every package has their own `build`, `dev` and `start` script as well.
 
 ## Tech stack
 
-- TypeScript
-- Prettier
-- Commitizen
-- Commitlint
-- Husky
-- Docker
+- [Docker][docker]
+- [NodeJS](https://nodejs.org)
+- [TypeScript](https://typescriptlang.org)
+- [Prettier](https://prettier.io)
+- [Commitizen](https://commitizen.github.io/cz-cli/)
+- [Commitlint](https://commitlint.js.org/)
+- [Husky](https://typicode.github.io/husky/)
 
 ### API package
 
-- NodeJS
-- KoaJS
-- Firebase Firestore
-- Socket.IO
-- Passport.JS
-- Argon2
+- [KoaJS](https://koajs.com)
+- [Firebase Firestore](http://firebase.google.com)
+- [Socket.IO](https://socket.io)
+- [Passport.JS](http://www.passportjs.org)
+- [Argon2](https://github.com/ranisalt/node-argon2#readme)
 
 ### Stream package
 
-- NodeJS
-- Node-Media-Server
-- Node-Fetch
-- FFmpeg
+- [Node Media Server](https://github.com/illuspas/Node-Media-Server#readme)
+- [Node Fetch](https://github.com/bitinn/node-fetch)
+- [FFmpeg][ffmpeg]
 
 ### Web package
 
-- Svelte
-- Socket.IO
+- [Svelte](https://svelte.dev)
+- [Socket.IO](https://socket.io)
+- [SvelteKit](https://kit.svelte.dev)
+- [PostCSS](https://postcss.org)
 
 ## Features
+
+### Must haves
 
 - [x] Register.
 - [x] Log in.
@@ -81,15 +98,25 @@ $ yarn format # Formats files with incorrect syntax.
   - [x] Authenticate your stream with a stream key.
 - [x] View streams.
 - [x] Chat on other people's streams.
-- [x] Set stream title.
+
+### Should haves
+
 - [x] Follow other profiles.
+- [x] Set stream title.
+- [x] Set programming language.
+- [x] Discover live channels on programming language.
+- [x] Have a stream thumbnail.
 
-### Wishlist
+### Could haves
 
-- Persistent chat message storage.
-- Video on-demand (VOD) functionality.
-- Emotes.
-- Chat moderators.
+- [x] Show when someone you follow is live or offline.
+- [ ] Chat emotes.
+
+### Would like to haves
+
+- [ ] Chat moderators.
+- [ ] Persistent chat message storage.
+- [ ] Video on-demand.
 
 ## Sketches
 
@@ -107,4 +134,13 @@ The Stream page shows a live stream, with the corresponding chat next to it.
 
 ## Data Lifecycle
 
+<!-- TODO: Update lifecycle -->
+
 ![Data showing the data lifecycle of the application](docs/data-lifecycle-v2.png)
+
+## What I've learned
+
+<!-- TODO: Write what I've learned -->
+
+[docker]: https://docker.com
+[ffmpeg]: http://ffmpeg.org
