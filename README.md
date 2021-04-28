@@ -18,7 +18,7 @@ The built-from-scratch live-streaming platform for all developers. Share your co
   - [Could haves](#could-haves)
   - [Would like to haves](#would-like-to-haves)
 - [Sketches](#sketches)
-- [Data lifecycle](#data-lifecycle)
+- [Data lifecycles](#data-lifecycles)
 - [What I've learned](#what-ive-learned)
 
 ## Getting started
@@ -132,11 +132,15 @@ The Languages page shows all programming languages, so you don't have to sift th
 
 The Stream page shows a live stream, with the corresponding chat next to it.
 
-## Data Lifecycle
+## Data Lifecycles
 
-<!-- TODO: Update lifecycle -->
+### For live streaming
 
-![Data showing the data lifecycle of the application](docs/data-lifecycle-v2.png)
+![Data lifecycle of live streaming flow](docs/streamer-lifecycle.png)
+
+### For website
+
+![Data lifecycle of web data flow](docs/web-lifecycle.png)
 
 ## What I've learned
 
