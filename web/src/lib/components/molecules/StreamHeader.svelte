@@ -30,17 +30,8 @@
     margin: var(--quarter-space) 0;
   }
 
-  button {
-    margin-left: var(--half-space);
-  }
-
   header h2 {
     font-size: var(--step-3);
-  }
-
-  header h3 {
-    font-size: var(--step-1);
-    font-weight: bold;
   }
 
   header p {

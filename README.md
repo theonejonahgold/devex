@@ -111,7 +111,7 @@ These commands are available from the root of the project, but every package has
 - [x] Set programming language.
 - [x] Discover live channels on programming language.
 - [x] Have a stream thumbnail.
-- [ ] Have a nice onboarding experience.
+- [x] Have a nice onboarding experience.
 
 ### Could haves
 
@@ -167,7 +167,7 @@ Socket events are spread over four namespaces:
 
 <details>
   <summary>Web: <code>update</code></summary>
-  Is sent when the logged in user's following list has been updated
+  Is sent when the logged in user's following list has been updated.
 </details>
 
 ### Watch namespace

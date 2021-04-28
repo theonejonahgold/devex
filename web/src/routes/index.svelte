@@ -15,7 +15,9 @@
 </script>
 
 <script lang="ts">
+  import ZeroStateText from '$lib/components/atoms/ZeroStateText.svelte'
   import DiscoverStream from '$lib/components/molecules/DiscoverStream.svelte'
+  import { userProfile } from '$lib/stores/user'
 
   export let streamers: Streamer[] = []
 </script>
@@ -27,6 +29,7 @@
     overflow: hidden;
     padding: var(--base-space);
     height: 100%;
+    position: relative;
   }
 
   h2 {
@@ -58,11 +61,18 @@
 
 <div>
   <h2>Discover</h2>
-  <ul>
-    {#each streamers as streamer}
-      <li>
-        <DiscoverStream {streamer} />
-      </li>
-    {/each}
-  </ul>
+  {#if streamers.length}
+    <ul>
+      {#each streamers as streamer}
+        <li>
+          <DiscoverStream {streamer} />
+        </li>
+      {/each}
+    </ul>
+  {:else}
+    <ZeroStateText>
+      Seems like nobody is live right now, how about you start your stream?
+      (Hint: you start at the top right)
+    </ZeroStateText>
+  {/if}
 </div>

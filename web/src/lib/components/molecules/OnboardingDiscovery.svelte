@@ -2,8 +2,8 @@
   import { createEventDispatcher } from 'svelte'
 
   const dispatch = createEventDispatcher<{
-    previous: null | undefined
-    next: null | undefined
+    previous: undefined
+    next: undefined
   }>()
 </script>
 
@@ -11,19 +11,23 @@
   p {
     color: var(--tertiary);
   }
+  
   div {
     display: flex;
   }
+  
   button:first-child {
     margin-right: 0.5rem;
   }
+
   button:last-child {
     margin-left: 0.5rem;
   }
+  
   video {
     width: 100%;
     border-radius: 12px;
-    margin-bottom: 1rem;
+    margin-bottom: var(--base-space);
   }
 </style>
 

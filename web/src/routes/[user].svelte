@@ -19,12 +19,17 @@
   import Chat from '$lib/components/molecules/Chat.svelte'
   import Settings from '$lib/components/molecules/Settings.svelte'
   import Stream from '$lib/components/organisms/Stream.svelte'
-  import { userProfile, userToken } from '$lib/stores/user'
-  import { getApiURL, getSocketURL, getStreamURL } from '$lib/utils/fetch'
+  import { userProfile } from '$lib/stores/user'
+  import { getApiURL, getSocketURL } from '$lib/utils/fetch'
   import { onDestroy, onMount } from 'svelte'
   import { io } from 'socket.io-client'
   import type { Socket } from 'socket.io-client'
-  import { get } from 'svelte/store'
+  import {
+    channelOnboardingDone,
+    profileOnboardingDone,
+  } from '$lib/stores/onboarding'
+  import ChannelOnboarding from '$lib/components/organisms/ChannelOnboarding.svelte'
+  import ProfileOnboarding from '$lib/components/organisms/ProfileOnboarding.svelte'
 
   let socket: Socket
 
@@ -65,3 +70,11 @@
     <Settings />
   {/if}
 </div>
+
+{#if $userProfile}
+  {#if user.username !== $userProfile?.username && !$channelOnboardingDone}
+    <ChannelOnboarding on:close={() => ($channelOnboardingDone = true)} />
+  {:else if user.username === $userProfile?.username && !$profileOnboardingDone}
+    <ProfileOnboarding on:close={() => ($profileOnboardingDone = true)} />
+  {/if}
+{/if}

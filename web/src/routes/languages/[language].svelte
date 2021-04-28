@@ -19,6 +19,7 @@
 <script lang="ts">
   import DiscoverStream from '$lib/components/molecules/DiscoverStream.svelte'
   import { getApiURL } from '$lib/utils/fetch'
+  import ZeroStateText from '$lib/components/atoms/ZeroStateText.svelte'
 
   export let streamers: Streamer[] = []
   export let language: Language
@@ -31,6 +32,7 @@
     overflow: hidden;
     padding: var(--base-space);
     height: 100%;
+    position: relative;
   }
 
   h2 {
@@ -62,11 +64,21 @@
 
 <div>
   <h2>{language.name}</h2>
-  <ul>
-    {#each streamers as streamer}
-      <li>
-        <DiscoverStream {streamer} />
-      </li>
-    {/each}
-  </ul>
+  {#if streamers.length}
+    <ul>
+      {#each streamers as streamer}
+        <li>
+          <DiscoverStream {streamer} />
+        </li>
+      {/each}
+    </ul>
+  {:else}
+    <ZeroStateText>
+      The streamer you're looking for codes in a different programming language. <a
+        href="/languages"
+      >
+        Return to the overview
+      </a>
+    </ZeroStateText>
+  {/if}
 </div>

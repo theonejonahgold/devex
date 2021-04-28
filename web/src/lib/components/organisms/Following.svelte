@@ -9,6 +9,7 @@
   import { cubicInOut } from 'svelte/easing'
   import { blur } from 'svelte/transition'
   import { blurTransitionConfig } from '$lib/constants/transition'
+  import ZeroStateText from '../atoms/ZeroStateText.svelte'
 
   export let collapsed = false
 
@@ -56,6 +57,7 @@
     width: max(16.6666667vw, 25rem);
     transition: width 0.2s ease, padding 0.2s ease;
     border-right: 2px solid rgba(255, 255, 255, 0.3);
+    position: relative;
   }
 
   .collapsed {
@@ -100,11 +102,18 @@
     {/if}
     <CollapseButton bind:collapsed invert={false} />
   </header>
-  <ul>
-    {#each [...streamerMap.entries()] as [_, streamer]}
-      <li>
-        <Followee bind:collapsed bind:streamer />
-      </li>
-    {/each}
-  </ul>
+  {#if streamerMap.size}
+    <ul>
+      {#each [...streamerMap.entries()] as [_, streamer]}
+        <li>
+          <Followee bind:collapsed bind:streamer />
+        </li>
+      {/each}
+    </ul>
+  {:else if !collapsed}
+    <ZeroStateText transition>
+      Have you checked the <a href="/languages/javascript">JavaScript</a>
+      community yet?
+    </ZeroStateText>
+  {/if}
 </aside>

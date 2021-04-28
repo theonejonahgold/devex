@@ -2,7 +2,7 @@
   import { createEventDispatcher } from 'svelte'
 
   const dispatch = createEventDispatcher<{
-    next: null | undefined
+    next: undefined
   }>()
 </script>
 
