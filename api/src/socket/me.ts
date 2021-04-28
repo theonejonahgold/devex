@@ -33,6 +33,7 @@ export default function createMeNamespace(io: Server) {
           streamKey: user.streamKey,
           live: user.live,
           streamTitle: user.streamTitle,
+          language: user.language,
         }
         socket.emit('update', filteredUser)
       })
