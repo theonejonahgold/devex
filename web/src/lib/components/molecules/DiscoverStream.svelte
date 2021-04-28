@@ -1,7 +1,15 @@
 <script>
   import { getStreamURL } from '$lib/utils/fetch'
+  import { onMount } from 'svelte'
 
   export let streamer: Streamer
+  let image: HTMLImageElement
+  onMount(() => {
+    const img = new Image()
+    img.addEventListener('load', () => (image = img))
+    img.src = `${getStreamURL()}/thumbnails/${streamer.username}.jpg`
+    img.alt = `Stream thumbnail for ${streamer.username}`
+  })
 </script>
 
 <style>
@@ -21,6 +29,17 @@
     width: 100%;
   }
 
+  .img-placeholder {
+    grid-area: image;
+    height: 0;
+    overflow: hidden;
+    width: 100%;
+    padding-top: 56.25%;
+    background: var(--tertiary);
+    border-radius: 12px;
+    border: 4px solid transparent;
+  }
+
   h1 {
     grid-area: title;
     font-size: var(--step-2);
@@ -35,7 +54,8 @@
     color: var(--primary);
   }
 
-  a:hover img {
+  a:hover img,
+  a:hover .img-placeholder {
     border-color: var(--green);
   }
 
@@ -65,10 +85,14 @@
 
 <a href="/{streamer.username}">
   <article>
-    <img
-      src="{getStreamURL()}/thumbnails/{streamer.username}.jpg"
-      alt="Stream thumbnail for {streamer.username}"
-    />
+    {#if image}
+      <img
+        src="{getStreamURL()}/thumbnails/{streamer.username}.jpg"
+        alt="Stream thumbnail for {streamer.username}"
+      />
+    {:else}
+      <div class="img-placeholder" />
+    {/if}
     <h1 class="h3">{streamer.streamTitle}</h1>
     <p>{streamer.username}</p>
     <p>{streamer.viewers === 1 ? '1 viewer' : `${streamer.viewers} viewers`}</p>
