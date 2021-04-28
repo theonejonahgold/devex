@@ -90,13 +90,29 @@ export default function createFollowingNamespace(io: Server) {
       })
     })
 
-    const initalData = (
+    const initialUsers = (
       await userCollection()
         .select('username', 'viewers', 'live', 'streamTitle')
         .where('username', 'in', socket.data.user.following)
         .get()
     ).docs.map(doc => doc.data())
 
-    socket.emit('initial-data', initalData)
+    const initialData = await Promise.all(
+      initialUsers.map(async data => {
+        if (data.language)
+          data.language = (
+            await languagesCollection().where('slug', '==', data.language).get()
+          ).docs[0].data().name
+        return {
+          username: data.username,
+          viewers: data.viewers,
+          live: data.live,
+          streamTitle: data.streamTitle,
+          language: data.language,
+        }
+      })
+    )
+
+    socket.emit('initial-data', initialData)
   })
 }
