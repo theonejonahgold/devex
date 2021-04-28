@@ -106,18 +106,18 @@ These commands are available from the root of the project, but every package has
 
 ### Should haves
 
-- [ ] Have a nice onboarding experience.
 - [x] Follow other profiles.
 - [x] Set stream title.
 - [x] Set programming language.
 - [x] Discover live channels on programming language.
 - [x] Have a stream thumbnail.
+- [ ] Have a nice onboarding experience.
 
 ### Could haves
 
 - [x] Show when someone you follow is live or offline.
 - [ ] Chat emotes.
-- [ ] Follow notifications in chat. 
+- [ ] Follow notifications in chat.
 
 ### Would like to haves
 
