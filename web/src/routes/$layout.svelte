@@ -1,6 +1,6 @@
 <script lang="ts">
   import '../app.css'
-  import { getStores, page } from '$app/stores'
+  import { page, navigating } from '$app/stores'
   import Header from '$lib/components/organisms/Header.svelte'
   import LoginModal from '$lib/components/organisms/LoginModal.svelte'
   import RegisterModal from '$lib/components/organisms/RegisterModal.svelte'
@@ -8,6 +8,8 @@
   import { get } from 'svelte/store'
   import { userProfile } from '$lib/stores/user'
   import { tick } from 'svelte'
+  import Onboarding from '$lib/components/organisms/Onboarding.svelte'
+  import { onboardingDone } from '$lib/stores/onboarding'
 
   let loginModal: boolean
   let registerModal: boolean
@@ -15,10 +17,6 @@
 
   let sidebarCollapsed: boolean =
     get(page).path !== '/' && !get(page).path.startsWith('/languages')
-
-  const { navigating } = getStores()
-
-  $: console.log($navigating)
 
   $: if ($navigating) {
     if (
@@ -57,12 +55,22 @@
     }}
   />
 {/if}
+
 {#if registerModal}
   <RegisterModal
     bind:initialUsername={unknownUsername}
     on:close={() => {
       unknownUsername = ''
       registerModal = false
+    }}
+  />
+{/if}
+
+{#if !$onboardingDone}
+  <Onboarding
+    on:close={e => {
+      if (e.detail.register) registerModal = true
+      onboardingDone.set(true)
     }}
   />
 {/if}

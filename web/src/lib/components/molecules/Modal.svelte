@@ -2,6 +2,9 @@
   import { createEventDispatcher } from 'svelte'
 
   export let title: string
+  export let large: boolean = false
+  export let noClose: boolean = false
+  export let preciseClose: boolean = false
 
   const dispatch = createEventDispatcher()
 
@@ -22,6 +25,10 @@
     background: var(--primary);
     border-radius: 12px;
     padding: var(--base-space);
+  }
+
+  .large {
+    width: min(100%, 40rem);
   }
 
   h1 {
@@ -52,15 +59,18 @@
 
 <svelte:window
   on:keydown={e => {
+    if (preciseClose) return
     if (e.key === 'Escape') closeModal()
   }}
 />
 
-<section>
+<section class:large>
   <header>
     <h1>{title}</h1>
-    <button on:click={closeModal}>Close</button>
+    {#if !noClose}
+      <button on:click={closeModal}><slot name="close">Close</slot></button>
+    {/if}
   </header>
   <slot />
 </section>
-<div on:click={closeModal} />
+<div on:click={() => !noClose && !preciseClose && closeModal()} />
