@@ -19,6 +19,11 @@ The built-from-scratch live-streaming platform for all developers. Share your co
   - [Would like to haves](#would-like-to-haves)
 - [Sketches](#sketches)
 - [Data lifecycles](#data-lifecycles)
+- [Socket events](#socket-events)
+  - [Following namespace](#follow-namespace)
+  - [Watch namespace](#watch-namespace)
+  - [Chat namespace](#chat-namespace)
+  - [Me namespace](#me-namespace)
 - [What I've learned](#what-ive-learned)
 
 ## Getting started
@@ -143,6 +148,63 @@ The Stream page shows a live stream, with the corresponding chat next to it.
 ### For website
 
 ![Data lifecycle of web data flow](docs/web-lifecycle.png)
+
+## Socket events
+
+Socket events are spread over four namespaces:
+
+1. Following namespace: For handling updates for the channel you follow. This makes the "Following" sidebar real-time.
+2. Watch namespace: For handling updates of the channel you're watching. Viewer count, live status, stream title and programming language are all updated real time through this namespace.
+3. Chat namapsace: This namespace handles the chat data flows, making the chat experience real-time and easy to use.
+4. Me namespace: When you update something about your own profile, this namespace ensures that these changes are sent back to the web app immediately after they're saved, so you have the most up-to-date version of your own profile available locally.
+
+### Following namespace
+
+<details>
+  <summary>API: <code>update</code></summary>
+  Is sent when a user object that's been followed is updated.
+</details>
+
+<details>
+  <summary>Web: <code>update</code></summary>
+  Is sent when the logged in user's following list has been updated
+</details>
+
+### Watch namespace
+
+<details>
+  <summary>Web: <code>join</code></summary>
+  Is sent when a socket connection has been established. The event is sent with the <code>channel</code> that the user is watching.
+</details>
+
+<details>
+  <summary>API: <code>update</code></summary>
+  Is sent when the user being watched has been updated inside the database in some way. The <code>viewers</code> count, <code>live</code> status, <code>streamTitle</code> and programming <code>language</code> are the four keys that are sent, along with the username.
+</details>
+
+### Chat namespace
+
+<details>
+  <summary>Web: <code>join</code></summary>
+  Is sent when the user joins a chat. The chat <code>room</code>, along with the <code>username</code>, is sent as payload for the API to handle.
+</details>
+
+<details>
+  <summary>Web: <code>message</code></summary>
+  Is sent when the user sents a chat message. A chat message can be sent without being logged in (not via the website without tinkering), but will not be sent to all other users in the chat as the user is authenticated before the message is sent.
+</details>
+
+<details>
+  <summary>API: <code>message</code></summary>
+  Either <code>user</code> or <code>server</code> type. With user messages the user is authenticated first, every message, to prevent messaging from spammers. The server messages are for announcements and welcome messages, and are now only sent when a connection is established.
+</details>
+
+### Me namespace
+
+<details>
+  <summary>API: <code>update</code></summary>
+  Is fired when the user object in the database has been updated in some sort of way, sending this new version to the client.
+</details>
 
 ## What I've learned
 
