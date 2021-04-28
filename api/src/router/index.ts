@@ -130,6 +130,7 @@ async function language(
   }
   const streamersRes = await userCollection()
     .where('language', '==', ctx.params.language)
+    .where('live', '==', true)
     .get()
   ctx.status = 200
   ctx.body = dataBody({
