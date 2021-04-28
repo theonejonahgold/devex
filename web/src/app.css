@@ -195,10 +195,22 @@ button {
   padding: 0.125em 0.375em;
 }
 
+button.invert {
+  background: var(--primary);
+  color: var(--tertiary);
+}
+
 button:hover,
 button:focus {
   border-color: var(--green);
   outline: none;
+}
+
+button.invert:hover,
+button.invert:focus {
+  color: var(--secondary);
+  border-color: var(--secondary);
+  background: var(--green);
 }
 
 button.large {

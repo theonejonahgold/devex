@@ -30,23 +30,6 @@
 
   export let user: Streamer
 
-  $: following = !!$userProfile?.following.includes(user.username)
-
-  function followHandler() {
-    let url: string = `${getApiURL()}/follow`
-    if (following) url = `${getApiURL()}/unfollow`
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${get(userToken)}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        channel: user.username,
-      }),
-    }).catch(console.error)
-  }
-
   onMount(() => {
     socket = io(getSocketURL() + '/watch', {
       path: '/api/socket.io/',
@@ -76,13 +59,7 @@
 </svelte:head>
 
 <div>
-  <Stream
-    on:follow-click={followHandler}
-    bind:streamer={user}
-    bind:following
-    stream={`${getStreamURL()}/live/${user.username}.m3u8`}
-    poster={`${getStreamURL()}/thumbnails/${user.username}.jpg`}
-  />
+  <Stream bind:streamer={user} />
   <Chat channel={user.username} />
   {#if user.username === $userProfile?.username}
     <Settings />

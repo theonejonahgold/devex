@@ -10,36 +10,25 @@
     paused,
   } from '$lib/stores/stream'
   import Hls from 'hls.js'
-  import {
-    afterUpdate,
-    createEventDispatcher,
-    onDestroy,
-    onMount,
-  } from 'svelte'
+  import { afterUpdate, onDestroy, onMount } from 'svelte'
   import { get } from 'svelte/store'
   import VideoElement from '../atoms/VideoElement.svelte'
   import StreamControls from '../molecules/StreamControls.svelte'
-  import LiveIcon from '../atoms/LiveIcon.svelte'
-  import { userProfile } from '$lib/stores/user'
   import BufferOverlay from '../atoms/BufferOverlay.svelte'
   import VideoOverlay from '../atoms/VideoOverlay.svelte'
   import PlayOverlay from '../atoms/PlayOverlay.svelte'
+  import StreamHeader from '../molecules/StreamHeader.svelte'
+  import { getStreamURL } from '$lib/utils/fetch'
 
-  export let stream: string = ''
-  export let poster: string = ''
   export let streamer: Streamer
-  export let following: boolean
+  $: stream = `${getStreamURL()}/live/${streamer.username}.m3u8`
+  $: poster = `${getStreamURL()}/thumbnails/${streamer.username}.jpg`
 
-  const dispatch = createEventDispatcher()
   let hls: Hls
   let section: any
   let videoEl: HTMLVideoElement
   let buffering: boolean
   let initialPlay: boolean = true
-
-  function onFollowButtonHandler() {
-    dispatch('follow-click')
-  }
 
   const debounceHideOverlay = debounce(() => showOverlay.set(false), 2000)
 
@@ -174,62 +163,6 @@
   section.hidden {
     cursor: none;
   }
-
-  header {
-    padding: var(--base-space) var(--base-space) var(--double-space);
-    z-index: 2;
-    grid-row: 1;
-    grid-column: 1;
-    align-self: start;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    display: grid;
-    grid-template-columns: 75% 25%;
-  }
-
-  header.hidden {
-    transform: translateY(-10%);
-    opacity: 0;
-  }
-
-  header div div {
-    display: flex;
-    margin: var(--quarter-space) 0;
-  }
-
-  button {
-    margin-left: var(--half-space);
-  }
-
-  header h2 {
-    font-size: var(--step-3);
-  }
-
-  header h3 {
-    font-size: var(--step-1);
-    font-weight: bold;
-  }
-
-  header p {
-    margin: var(--quarter-space) 0;
-  }
-
-  header div:nth-of-type(2) p {
-    text-align: right;
-  }
-
-  .active {
-    color: var(--secondary);
-    background: var(--green);
-    border-color: var(--green);
-  }
-
-  .active:hover,
-  .active:focus {
-    color: var(--primary);
-    background: var(--red);
-    border-color: var(--red);
-  }
 </style>
 
 <section
@@ -237,34 +170,7 @@
   bind:this={section}
   on:mousemove={overlayHandler}
 >
-  <header class:hidden={!$showOverlay}>
-    <div>
-      <h2>{streamer.streamTitle}</h2>
-      <div>
-        <p class="h3">{streamer.username}</p>
-        {#if $userProfile && $userProfile.username !== streamer.username}
-          <button class:active={following} on:click={onFollowButtonHandler}>
-            {following ? 'Unfollow' : 'Follow'}
-          </button>
-        {/if}
-      </div>
-      {#if streamer.live}
-        {#if streamer.language}
-          <p>Coding in {streamer.language}</p>
-        {:else}
-          <p>Coding in some language</p>
-        {/if}
-      {/if}
-    </div>
-    <div>
-      <LiveIcon bind:live={streamer.live} />
-      {#if streamer.live}
-        <p>
-          {streamer.viewers === 1 ? '1 viewer' : `${streamer.viewers} viewers`}
-        </p>
-      {/if}
-    </div>
-  </header>
+  <StreamHeader bind:streamer />
   {#if streamer.live}
     {#if buffering || initialPlay}
       <VideoOverlay>
