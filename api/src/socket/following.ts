@@ -53,7 +53,9 @@ export default function createFollowingNamespace(io: Server) {
       )
 
       socket.on('update', (following: string[]) => {
-        following.filter(user => !socket.rooms.has(user)).forEach(socket.join)
+        following
+          .filter(user => !socket.rooms.has(user))
+          .forEach(user => socket.join(user))
         socket.rooms.forEach(async room => {
           if (room !== socket.id && !following.includes(room))
             await socket.leave(room)
