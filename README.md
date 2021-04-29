@@ -82,7 +82,7 @@ These commands are available from the root of the project, but every package has
 
 ### Stream package
 
-- [Node Media Server](https://github.com/illuspas/Node-Media-Server#readme)
+- [Node Media Server][nms]
 - [Node Fetch](https://github.com/bitinn/node-fetch)
 - [FFmpeg][ffmpeg]
 
@@ -90,6 +90,7 @@ These commands are available from the root of the project, but every package has
 
 - [Svelte](https://svelte.dev)
 - [Socket.IO](https://socket.io)
+- [HLS.js](https://github.com/)
 - [SvelteKit](https://kit.svelte.dev)
 - [PostCSS](https://postcss.org)
 
@@ -122,6 +123,7 @@ These commands are available from the root of the project, but every package has
 
 ### Would like to haves
 
+- [ ] Dynamically cap resolution based on incoming stream.
 - [ ] Chat moderators.
 - [ ] Persistent chat message storage.
 - [ ] Video on-demand.
@@ -209,7 +211,43 @@ Socket events are spread over four namespaces:
 
 ## What I've learned
 
-<!-- TODO: Write what I've learned -->
+For me, the biggest hurdle with this project was figuring out how to make it possible to use software like [OBS](https://obsproject.org) to transmit your live stream to DevEx. What I came across was [Node media server][nms], a package tailor-made to ingest, transcode and then publicate the transcode(d) stream(s) for the world to see. There is almost no documentation on how to use this package, so I had to look online for implementations of it in the way that was usable to me.
+
+Luckily, a GitHub user by the name of [johndavedecano](https://github.com/johndavedecano/) had a repository called [node-rtmp-hls](https://github.com/johndavedecano/node-rtmp-hls/), which is exactly what I needed. What I've learned was that software like OBS transmit an [RTMP](https://en.wikipedia.org/wiki/Real-time_Messaging_Protocol) stream, which is a relic from the flash player days and was used to transmit real-time data to and from flash players from a server. This was used in the early days of live streaming, before HTML5 video waas popularised, as it was the only way to reliably watch a live stream (I think, this is pure speculation). Since Flash has gone, Apple has come with [HLS](https://en.wikipedia.org/wiki/HTTP_Live_Streaming), which is their counter-point to RTMP, and works over regular HTTP. This means that I can use the configuration John made for his repository, and use it myself! Although I had no clue what everything did until I did some more learning. And some learning I did.
+
+I learned about RTMP, HLS, how the Node-Media-Server package works and how the configuration John made turns one RTMP stream into multiple HLS streams. The [Config file](https://github.com/theonejonahgold/real-time-web-2021/blob/main/stream/src/config.ts) has two main keys that are very important, `relay` and `trans`, standing for "relay" and "transcode" repectively. The `relay` key tells the `stream` app ([rtmp://devex.jonahgold.dev/stream](rtmp://devex.jonahgold.dev/stream)) to push all video coming in to the `hls_360p`, `hls_480p`, `hls_720p`, `hls_1080p` apps. These apps are all transcoders, meaning they mold incoming video into a certain output. This is done with [FFmpeg][ffmpeg], the most versatile tool for basically turning every form of video into every form of video or audio you want. FFmpeg takes the RTMP stream coming in from `stream`, and outputs it into the settings provided by each "app". This is in turn written to disk, but that's not where the party ends.
+
+Now we have 4 separate streams (or 2 as I've commented out the 720p and 1080p streams). These streams need to come together in some way, so the video player in your browser knows about all the possible resolutions to choose from. This is done in what's called a "HLS playlist". Every resolution has one of their own, and the code in [playlist.ts](https://github.com/theonejonahgold/real-time-web-2021/blob/main/stream/src/playlist.ts) creates one for all resolutions, making it possible to digest all stream resolutions from one file only.
+
+When I found out how this all worked, my mind started racing with possible features. That's why I've made a [thumbnail](https://github.com/theonejonahgold/real-time-web-2021/blob/main/stream/src/thumbnail.ts) feature, creating thumbnails for all live streams every minute. I didn't create the command myself, as I have no idea which options FFmpeg has, but I can explain what it does after seeing it in action.
+
+Small fun fact: apparently only Safari supports HLS natively, but every other browser can support it with what's called [Media Source Extensions](https://en.wikipedia.org/wiki/Media_Source_Extensions). The [HLS.js][hlsjs] I used for the web app is such an extension, and adds HLS support to a lot more browsers (plus improving the one in Safari with quality level selection and more video events).
+
+### In short
+
+So, what have I learned the most:
+
+- What the RTMP and HLS protocols are.
+- How the node-media-server package turns 1 RTMP stream into 4 HLS streams in multiple resolutions.
+- How to use this knowledge to think of featuers myself.
+- That a lot of the live streaming platforms still rely on old protocols from when they first started.
+- HLS is only supported in Safari, but very easy to implement in other browsers.
+
+## Special thanks
+
+- Justus Sturkerboom and Lukas van Driel from [Real-Time Web](https://github.com/cmda-minor-web/real-time-web-2021) for allowing me to experiment with this amazing concept.
+- Lukas van Driel especially for being a good coach, providing me with very helpful feedback each week.
+- Student-assistant Robin Frugte
+- [Victor](https://github.com/bvictorb), [Guus](https://github.com/tsjuusmei), [Roeland](https://github.com/roelandvs), [Vincent](https://github.com/Vincentvanleeuwen) & Evelyn for providing me with very good usability feedback!
+- Evelyn again, for her patience and mental support.
+- Squid Squad A for being the best squad.
+- [John](https://github.com/johndavedecano/) for providing such a helpful template to work off of.
+- [Chen](https://github.com/illuspas) for creating Node-Media-Server.
+- Destek from [StackOverflow](https://stackoverflow.com/a/57791778) for providing the FFmpeg command to generate thumbnails from an HLS stream.
+
+All other sources used documentation, which I've documented in the [Tech stack](#tech-stack) section.
 
 [docker]: https://docker.com
 [ffmpeg]: http://ffmpeg.org
+[nms]: https://github.com/illuspas/Node-Media-Server
+[hlsjs]: https://github.com/video-dev/hls.js
