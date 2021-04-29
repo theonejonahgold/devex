@@ -198,6 +198,9 @@
         target="_blank"
         rel="noopener noreferrer">OBS</a
       >.
+      <a href="https://obsproject.com" target="_blank" rel="noopener noreferrer"
+        >Download it here!</a
+      >
       <a
         href="https://obsproject.com/wiki/OBS-Studio-Quickstart"
         target="_blank"
