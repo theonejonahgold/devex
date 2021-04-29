@@ -116,6 +116,7 @@ These commands are available from the root of the project, but every package has
 
 ### Could haves
 
+- [ ] Profile search
 - [x] Show when someone you follow is live or offline.
 - [x] Show something when there is nothing to show on pages.
 - [ ] Chat emotes.
