@@ -1,7 +1,7 @@
 import Router from '@koa/router'
 import { firestore } from 'firebase-admin'
 import { ParameterizedContext } from 'koa'
-import { userCollection, languagesCollection } from 'src/firebase'
+import { userCollection, languagesCollection } from '../firebase'
 import { errorBody, dataBody, confirmBody } from './utils'
 
 export { user, live, title, language }

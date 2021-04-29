@@ -1,6 +1,6 @@
 import Router from '@koa/router'
 import { ParameterizedContext } from 'koa'
-import { languagesCollection, userCollection } from 'src/firebase'
+import { languagesCollection, userCollection } from '../firebase'
 import { DBUser } from 'types/user'
 import { dataBody, errorBody } from './utils'
 
