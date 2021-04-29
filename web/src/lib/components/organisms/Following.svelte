@@ -112,8 +112,8 @@
     </ul>
   {:else if !collapsed}
     <ZeroStateText transition>
-      Have you checked the <a href="/languages/javascript">JavaScript</a>
-      community yet?
+      Have you checked out all the <a href="/languages">languages</a> we have to
+      offer?
     </ZeroStateText>
   {/if}
 </aside>
